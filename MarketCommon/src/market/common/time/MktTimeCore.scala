@@ -1,5 +1,6 @@
 package market.common.time
 import java.time.LocalDateTime
+import scala.collection.JavaConversions._
 import java.time.MonthDay
 import java.time.ZoneOffset
 import java.lang.Comparable;
@@ -90,8 +91,9 @@ object PredefIntverType extends Enumeration
    /**
     * 市场日历所在交易中心定义的所有时段类型列表
     */
-   def intervalTypes:List[MarketIntervalType];
    
+   def intervalTypes:List[MarketIntervalType];
+   def getIntervalTypeList:java.util.List[MarketIntervalType]=this.intervalTypes;
    def decoderFactory:IntervalDecoderFactory
    //-------------------------------------------------------------- 
   /**
@@ -218,6 +220,8 @@ object PredefIntverType extends Enumeration
     val itvType=this.getIntervalType(predefType);
     itvType.getIntervalsTo(pointInclusive);
   }
+  def getIntervalListTo(predefType:PredefIntverType.PredefIntverType,
+       pointInclusive:LocalDateTime):java.util.List[MktInterval]=getIntervalsTo(predefType,pointInclusive);
   /**
    * 获取给定时段类型下，从该类型时间段从设定的开始时间到给定自然时间点之前所经历的所有时间段。
    */
