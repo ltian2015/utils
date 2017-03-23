@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<TradeCenters>
+    <TradeCenter id="kunming" name="昆明电力交易中心" description="测试租户"/>;
+</TradeCenters>
