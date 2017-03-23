@@ -406,22 +406,22 @@ trait MktInterval extends TimeInterval with Ordered[MktInterval] with Comparable
     * 
     * 是否为上级时段的尾部
     */
-   def isTailOfUpper:Boolean=this.end==this.getUpperInterval.end;
+   def isTail:Boolean=this.end==this.getUpperInterval.end;
    /**
     * 是否为给定级别上级时段的尾部
     */
-   def isTailOf(level:MarketIntervalType):Boolean={
+   def isTail(level:MarketIntervalType):Boolean={
      require((level!=null)&&(level>this.intervalType),"给定级别不是该时段类型的上级类型");
      this.end==this.getUpperInterval(level).end;
    }
    /**
     * 是否为直接上级的头部
     */
-   def isHeadOfUpper:Boolean=this.start==this.getUpperInterval.start;
+   def isHead:Boolean=this.start==this.getUpperInterval.start;
    /**
     * 是否为给定级别上级时段的头部
     */
-   def isHeadOf(level:MarketIntervalType):Boolean={
+   def isHead(level:MarketIntervalType):Boolean={
      require((level!=null)&&(level>this.intervalType),"给定级别不是该时段类型的上级类型");
      this.start==this.getUpperInterval(level).start;
    }
@@ -432,7 +432,7 @@ trait MktInterval extends TimeInterval with Ordered[MktInterval] with Comparable
    def next(overUpperBound:Boolean=false):MktInterval={
      val nextStar:LocalDateTime=this.end.plusSeconds(1);
      val nextItv=this.intervalType.getIntervalInclude(nextStar);
-     if ((overUpperBound)||(!this.isTailOfUpper)) nextItv else throw new Exception("next操作已超时段边界");
+     if ((overUpperBound)||(!this.isTail)) nextItv else throw new Exception("next操作已超时段边界");
    }
    /**
     * 得到指定步长的后续时段列表，如果允许超界overUpperBound=true，则永远会返回指定步长的时段列表，
@@ -454,10 +454,12 @@ trait MktInterval extends TimeInterval with Ordered[MktInterval] with Comparable
     */
    def prior(overUpperBound:Boolean=false):MktInterval={
          val priorStart:LocalDateTime=timePlusByUnit(this.start, - this.intervalType.unitCount ,this.intervalType.intervalUnit);
-         val higherItv=this.getUpperInterval;
-         if((overUpperBound)||(priorStart.isBefore(higherItv.start)))
+         if (!priorStart.isBefore(this.intervalType.startTime)){
+             val upperItv=this.getUpperInterval;
+             if((overUpperBound)||(!priorStart.isBefore(upperItv.start)))
                this.intervalType.getIntervalInclude(priorStart);
-         else throw new Exception("prior操作已超时段边界");
+             else throw new Exception("prior操作已超上级时段边界");
+         } else throw new Exception("prior操作已超时段类型起始原点边界");
    }
    /**
     * 
@@ -488,19 +490,19 @@ trait MktInterval extends TimeInterval with Ordered[MktInterval] with Comparable
    /**
     * 
     */
-   def getHeadSubInterval(subItvType:MarketIntervalType):MktInterval={
-     require((subItvType!=null)&&(subItvType<this.intervalType));
+   def getHead(subItvType:MarketIntervalType):MktInterval={
+     require((subItvType!=null)&&(subItvType<this.intervalType),"给定的时段类型不是下级时段");
      subItvType.getIntervalInclude(this.start);
    }
    /**
     * 
     */
-   def getHeadSubInterval:MktInterval=this.getHeadSubInterval(this.intervalType.getSubType);
+   def getHead:MktInterval=this.getHead(this.intervalType.getSubType);
    /**
     * 
     */
-   def getTailSubInterval(subItvType:MarketIntervalType):MktInterval={
-      require((subItvType!=null)&&(subItvType<this.intervalType));
+   def getTail(subItvType:MarketIntervalType):MktInterval={
+      require((subItvType!=null)&&(subItvType<this.intervalType),"给定的时段类型不是上级时段");
       val tailSubStart=this.timePlusByUnit(this.end,
              -1 * subItvType.unitCount, subItvType.intervalUnit);
       subItvType.getIntervalInclude(tailSubStart);
@@ -508,7 +510,7 @@ trait MktInterval extends TimeInterval with Ordered[MktInterval] with Comparable
    /**
     * 
     */
-   def getTailSubInterval:MktInterval=this.getTailSubInterval(this.intervalType.getSubType);
+   def getTail:MktInterval=this.getTail(this.intervalType.getSubType);
    /**
     * 得到所有直接下级时段列表
     */

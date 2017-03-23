@@ -77,13 +77,13 @@ object Test extends App{
      val itvType5m=mc.getIntervalType("5m");
      val itv=itvType3Y.getStartingInterval;
      val startInclusive=LocalDateTime.of(2017, 1, 1, 0, 0);
-     val endExclusive=LocalDateTime.of(2017, 1, 2, 0, 0);
-     val itv1=itvType1D.getIntervalAt(startInclusive, endExclusive);
+     val endExclusive=LocalDateTime.of(2018, 1, 4, 0, 1);
+     val itv1=mc.getIntervalAt(startInclusive, endExclusive)
      println(itv1);
-     println(itv1.getUpperInterval(itvType3Y))
+     
      println("---------------------------------------------------")
      //val itvList=itvType1D.getIntervalsCross(startInclusive, endExclusive);
-     val itvList=itv1.priorIntervals(5, true)
+     val itvList=mc.getIntervalsTo(PredefIntverType.ONE_DAY,  endExclusive);
      for (itv<-itvList) println(itv.toString()+":"+itv.isBefor(endExclusive));
     
               
