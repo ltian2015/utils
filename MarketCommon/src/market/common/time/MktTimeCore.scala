@@ -569,13 +569,6 @@ trait IntervalTypeDecoder
     def encode(itv:MktInterval):String;
 }
 /**
- * 定义了时段类型解码/编码器工厂对象的行为规范
- */
-trait IntervalDecoderFactory
-{
-   def getDecoder(intervalTypeId:String):IntervalTypeDecoder;
-}
-/**
  * 定义了市场时段类型的属性和行为规范
  */
 trait MarketIntervalType extends   Ordered[MarketIntervalType] with Comparable[MarketIntervalType] 

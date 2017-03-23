@@ -7,6 +7,16 @@ import market.common.time.MarketIntervalUnit
 import market.common.time._
 import java.time.OffsetDateTime
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
+/**
+ * 定义时段类型解码/编码器工厂对象的行为规范
+ */
+trait IntervalDecoderFactory
+{
+   def getDecoder(tradeCenterId:String,intervalTypeId:String):IntervalTypeDecoder;
+}
+
 object DefaultCalendarFactory
  {
    val  repositoryImpl:MktCalendarRepository=RepositoryImpl;
@@ -84,116 +94,39 @@ final class FiveMinute(mktCalendar:MktCalendar,startTime:LocalDateTime,isStop:Bo
 {
 
 }
+
 object  DefaultDecoderFactory extends IntervalDecoderFactory
 {
-   def getDecoder(intervalTypeId:String):IntervalTypeDecoder={
-     intervalTypeId match {
-       case "3Y" =>ThreeYearDecoder;
-       case "2Y" =>TwoYearDecoder;
-       case "1Y" =>OneYearDecoder;
-       case "1M" =>OneMonthDecoder;
-       case "1D" =>OneDayDecoder;
-       case "1H" =>OneHourDecoder;
-       case "1Q" =>OneQuarterDecoder;
-       case "5m" =>FiveMinuteDecoder;
-       case _ =>null;
-     }
+   def getDecoder(tradeCenterId:String,intervalTypeId:String):IntervalTypeDecoder={
+       new DefaultCommonDecoder(tradeCenterId,intervalTypeId);
    }
 }
-object ThreeYearDecoder extends IntervalTypeDecoder
+final class  DefaultCommonDecoder(val tradeCenterId:String,val intervalTypeId:String) extends IntervalTypeDecoder
 {
-    def canDecode(itvId:String):Boolean=itvId.startsWith("3Y:");
+    private  val mc=DefaultCalendarFactory().getCalendar(tradeCenterId);
+    if (mc==null) throw new Exception("给定ID："+tradeCenterId+"的交易中心不存在");
+    private  val itvType=mc.getIntervalType(intervalTypeId);
+    if (itvType==null) throw new Exception("给定ID："+intervalTypeId+"的时段类型不存在");
+    private val separator:String=":";
+    
+    def canDecode(itvId:String):Boolean={
+      itvId.startsWith(itvType.id);
+    } 
     def decode(itvId:String):MktInterval={
-      //TODO
-      null;
+       val subStrs:Array[String]=itvType.id.split(separator);
+       if (subStrs.size!=2) throw new Exception("给定时段编码格式非法，无法解码");
+       val itvId:String=subStrs(1);
+       if (itvId!=intervalTypeId)throw new Exception("给定时段编码格式非法，无法解码");
+       val itvStartStr:String=subStrs(2);
+       val itvStartTime:LocalDateTime=LocalDateTime.parse(itvStartStr, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+       if (itvStartTime==null) throw new Exception("给定时段编码格式非法，无法解码");
+       this.itvType.getIntervalInclude(itvStartTime);
     }
     def encode(itv:MktInterval):String={
-      //TODOs
-      "";
-    }
-}
-object TwoYearDecoder extends IntervalTypeDecoder
-{
-    def canDecode(itvId:String):Boolean=itvId.startsWith("2Y:");
-    def decode(itvId:String):MktInterval={
-      //TODO
-      null;
-    }
-    def encode(itv:MktInterval):String={
-      //TODOs
-      "";
-    }
-}
-object OneYearDecoder extends IntervalTypeDecoder
-{
-    def canDecode(itvId:String):Boolean=itvId.startsWith("1Y:");
-    def decode(itvId:String):MktInterval={
-      //TODO
-      null;
-    }
-    def encode(itv:MktInterval):String={
-      //TODOs
-      "";
-    }
-}
-object OneMonthDecoder extends IntervalTypeDecoder
-{
-    def canDecode(itvId:String):Boolean=itvId.startsWith("1M:");
-    def decode(itvId:String):MktInterval={
-      //TODO
-      null;
-    }
-    def encode(itv:MktInterval):String={
-      //TODOs
-      "";
-    }
-}
-object OneDayDecoder extends IntervalTypeDecoder
-{
-    def canDecode(itvId:String):Boolean=itvId.startsWith("1D:");
-    def decode(itvId:String):MktInterval={
-      //TODO
-      null;
-    }
-    def encode(itv:MktInterval):String={
-      //TODOs
-      "";
-    }
-}
-object OneHourDecoder extends IntervalTypeDecoder
-{
-    def canDecode(itvId:String):Boolean=itvId.startsWith("1H:");
-    def decode(itvId:String):MktInterval={
-      //TODO
-      null;
-    }
-    def encode(itv:MktInterval):String={
-      //TODOs
-      "";
-    }
-}
-object OneQuarterDecoder extends IntervalTypeDecoder
-{
-    def canDecode(itvId:String):Boolean=itvId.startsWith("1Q:");
-    def decode(itvId:String):MktInterval={
-      //TODO
-      null;
-    }
-    def encode(itv:MktInterval):String={
-      //TODOs
-      "";
-    }
-}
-object FiveMinuteDecoder extends IntervalTypeDecoder
-{
-   def canDecode(itvId:String):Boolean=itvId.startsWith("5m:");
-    def decode(itvId:String):MktInterval={
-      //TODO
-      null;
-    }
-    def encode(itv:MktInterval):String={
-      //TODOs
-      "";
+       if (itv.intervalType!=this.itvType) throw new Exception("给定的时段对象类型(id="
+              +itv.intervalType.id+")与本解码器所能解码的时段类型("+
+              intervalTypeId+")+不匹配，无法解码");
+       intervalTypeId+this.separator+itv.start.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
     }
 }
 

@@ -84,7 +84,9 @@ object Test extends App{
      println("---------------------------------------------------")
      //val itvList=itvType1D.getIntervalsCross(startInclusive, endExclusive);
      val itvList=mc.getIntervalsTo(PredefIntverType.ONE_DAY,  endExclusive);
-     for (itv<-itvList) println(itv.toString()+":"+itv.isBefor(endExclusive));
+     for (itv<-itvList) {
+       println(itv.toString()+":"+itv.isBefor(endExclusive)+" : "+itv.encode);
+     }
     
               
 

@@ -5,6 +5,7 @@ import scala.collection.mutable.ListBuffer;
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import market.common.time.defaultimpl._
+
 object RepositoryImpl extends MktCalendarRepository{
   val dir=".\\resource\\";
   val tcConfigFile=dir+"TradeCenterConfig.xml"
@@ -32,7 +33,7 @@ object RepositoryImpl extends MktCalendarRepository{
                  case _ =>{ val unitCount= (node \ "@unitCount").text.toInt;
                      val intervalUnit=MarketIntervalUnit.from((node \ "@intervalUnit").text);
                      val typeId=(node \ "@id").text;
-                     val decoder=DefaultDecoderFactory.getDecoder(typeId);
+                     val decoder=DefaultDecoderFactory.getDecoder(tradeCenterId,typeId);
                      new BaseMarketIntervalType(typeId,
                          calendar, unitCount, intervalUnit, decoder,startTime,isStop,stopTime);
                  }
