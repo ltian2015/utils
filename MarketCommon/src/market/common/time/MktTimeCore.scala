@@ -79,7 +79,6 @@ object PredefIntverType extends Enumeration
  */
  trait MktCalendar
 {
-  
    implicit def mktIntervalWrapper(itv:TimeInterval):MktInterval={
      this.getIntervalAt(itv.start, itv.end);
    }
@@ -92,6 +91,8 @@ object PredefIntverType extends Enumeration
     * 市场日历所在交易中心定义的所有时段类型列表
     */
    def intervalTypes:List[MarketIntervalType];
+   
+   def decoderFactory:IntervalDecoderFactory
    //-------------------------------------------------------------- 
   /**
    * 按照步长和市场时间单位获得市场时段类型
@@ -245,6 +246,43 @@ object PredefIntverType extends Enumeration
      val itvType=this.getIntervalType(predefType);
      itvType.getIntervalsCross(startInclusive,endExclusive);
   }
+    /**
+    * 获得给定时段类型下，在所在交易中心的起始时间段。
+    */
+  def getStartingInterval(itvType:MarketIntervalType):MktInterval={
+    itvType.getStartingInterval;
+  }
+  /**
+   * 获取给定时段类型下，从给定类型时间段从设定的开始时间到包括给定自然时间点时所经历的所有时间段。
+   * 
+   */
+  def getIntervalsTo(itvType:MarketIntervalType,pointInclusive:LocalDateTime)={
+    itvType.getIntervalsTo(pointInclusive);
+  }
+  /**
+   * 获取给定时段类型下，从该类型时间段从设定的开始时间到给定自然时间点之前所经历的所有时间段。
+   */
+  def getIntervalsUntil(itvType:MarketIntervalType,pointExclusive:LocalDateTime)={
+     itvType.getIntervalsUntil(pointExclusive);
+  }
+   /**
+   * 得到给定时段类型下，在给定自然时间段内的市场时间段 
+   */
+   def getMktIntervalsBetween(itvType:MarketIntervalType,startInclusive:LocalDateTime,endExclusive:LocalDateTime)={
+      itvType.getIntervalsBetween(startInclusive,endExclusive);
+  }
+  /**
+   * 得到给定时段类型下，包含给定自然时间点的市场时间段 
+   */
+   def getMktIntervalInclude(itvType:MarketIntervalType,pointInclusive:LocalDateTime):MktInterval={
+      itvType.getIntervalInclude(pointInclusive);
+   }
+   /**
+   * 得到给定时段类型下，与给定自然时间段相交的市场时间段。
+   */
+  def getIntervalsCross(itvType:MarketIntervalType,startInclusive:LocalDateTime,endExclusive:LocalDateTime):List[MktInterval]={
+     itvType.getIntervalsCross(startInclusive,endExclusive);
+  }
 }
  
  trait MktCalendarRepository
@@ -258,10 +296,12 @@ object PredefIntverType extends Enumeration
  /**
   * 市场日历的缺省实现
   */
- private class DefaultMarketCalendar(mktCalendarRepo:MktCalendarRepository,tradeCenterId:String) extends MktCalendar
+ private class DefaultMarketCalendar(mktCalendarRepo:MktCalendarRepository,
+      tradeCenterId:String,val decoderFactory:IntervalDecoderFactory) extends MktCalendar
  {
    require(mktCalendarRepo!=null,"构造MarketCalendar 需要指定MktCalendarRepository参数 "); 
    require(tradeCenterId!=null,"构造MarketCalendar需要指定所在交易中心ID参数 "); 
+   require(decoderFactory!=null,"构造MarketCalendar需要指定解码器工厂参数 "); 
    private lazy val tc=mktCalendarRepo.loadTradeCenter(tradeCenterId);
    require(tc!=null,"指定的交易中心ID参数无效");
    /**
@@ -559,7 +599,8 @@ trait MktInterval extends TimeInterval with Ordered[MktInterval] with Comparable
    
 }
 /////////////////////////////////////////////////////////////////////////////////////
-/**
+
+ /**
  * 定义了时段类型解码/编码器的行为规范
  */
 trait IntervalTypeDecoder
@@ -569,18 +610,26 @@ trait IntervalTypeDecoder
     def encode(itv:MktInterval):String;
 }
 /**
+ * 定义时段类型解码/编码器工厂对象的行为规范
+ */
+trait IntervalDecoderFactory
+{
+   def getDecoder(intervalTypeId:String):IntervalTypeDecoder;
+}
+
+/**
  * 定义了市场时段类型的属性和行为规范
  */
 trait MarketIntervalType extends   Ordered[MarketIntervalType] with Comparable[MarketIntervalType] 
 {
   def  id:String;
-  def  decoder:IntervalTypeDecoder;
   def  intervalUnit:MarketIntervalUnit.MarketIntervalUnit;
   def  unitCount:Int;
   def  startTime:LocalDateTime
   def  mktCalendar:MktCalendar;
   def  isStop:Boolean;
   def  stopTime:LocalDateTime;
+  def  decoder:IntervalTypeDecoder=mktCalendar.decoderFactory.getDecoder(id);
   def approximateMinutes:Int={ 
           val minutesOfUnit:Int= this.intervalUnit match { 
             case MarketIntervalUnit.MINUTE=>1
@@ -715,8 +764,8 @@ trait MarketIntervalType extends   Ordered[MarketIntervalType] with Comparable[M
  */
 abstract class  AbstractMarketIntervalType (val id:String, val mktCalendar:MktCalendar,
             val unitCount:Int, val intervalUnit:MarketIntervalUnit.MarketIntervalUnit,
-            val decoder:IntervalTypeDecoder,val startTime:LocalDateTime, 
-            val isStop:Boolean,val stopTime:LocalDateTime) extends MarketIntervalType
+            val startTime:LocalDateTime, val isStop:Boolean,
+            val stopTime:LocalDateTime) extends MarketIntervalType
 {        
      require(id!=null); 
      require(intervalUnit!=null,"市场时间间隔类型的时间单位(intervalUnit)参数不允许为空");

@@ -22,22 +22,11 @@ object RepositoryImpl extends MktCalendarRepository{
             val stopTimeText=(node \ "@stopTime").text;
             val stopTime:LocalDateTime=if (stopTimeText=="" || stopTimeText=="-") null 
                  else LocalDateTime.parse(stopTimeText,DateTimeFormatter.ISO_LOCAL_DATE_TIME);  
-            val itvType:MarketIntervalType=(node \ "@id").text match {
-                 case  "3Y" =>new ThreeYear(calendar,startTime,isStop,stopTime);
-                 case  "2Y" =>new TwoYear(calendar,startTime,isStop,stopTime);
-                 case  "1Y" =>new OneYear(calendar,startTime,isStop,stopTime);
-                 case  "1M" =>new OneMonth(calendar,startTime,isStop,stopTime);
-                 case  "1D" =>new OneDay(calendar,startTime,isStop,stopTime);
-                 case  "1Q" =>new OneQuarter(calendar,startTime,isStop,stopTime);
-                 case  "5m" =>new FiveMinute(calendar,startTime,isStop,stopTime);
-                 case _ =>{ val unitCount= (node \ "@unitCount").text.toInt;
-                     val intervalUnit=MarketIntervalUnit.from((node \ "@intervalUnit").text);
-                     val typeId=(node \ "@id").text;
-                     val decoder=DefaultDecoderFactory.getDecoder(tradeCenterId,typeId);
-                     new BaseMarketIntervalType(typeId,
-                         calendar, unitCount, intervalUnit, decoder,startTime,isStop,stopTime);
-                 }
-            }
+            val typeId=(node \ "@id").text;
+            val intervalUnit=MarketIntervalUnit.from((node \ "@intervalUnit").text);
+            val unitCount= (node \ "@unitCount").text.toInt;
+            val itvType:MarketIntervalType=new DefaultIntervalType(typeId,
+                         calendar, unitCount, intervalUnit,startTime,isStop,stopTime);
             listBuffer += itvType;
     }
     listBuffer.toList;

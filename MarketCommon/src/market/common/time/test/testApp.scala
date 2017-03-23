@@ -45,23 +45,23 @@ object Test extends App{
      val mc: MktCalendar=DefaultCalendarFactory().getCalendar("kunming")
      val fileName=tcIntConfigFilePrex+mc.tradeCenter.id+".xml"
      val startTime=LocalDateTime.of(2017, 1, 1, 0, 0,0, 0);
-     val itvType1=new ThreeYear(mc,startTime,false,null);
-   //  val itvType2=new TwoYear(mc,startTime,false,null);
-     val itvType3=new OneYear(mc,startTime,false,null);
-     val itvType4=new OneMonth(mc,startTime,false,null);
-     val itvType5=new OneDay(mc,startTime,false,null);
-     val itvType6=new OneHour(mc,startTime,false,null);
-     val itvType7=new OneQuarter(mc,startTime,false,null);
-     val itvType8=new FiveMinute(mc,startTime,false,null);
+     val itvType3Y=new DefaultIntervalType("3Y",mc,3,MarketIntervalUnit.YEAR,startTime,false,null);
+     //val itvType2Y=new DefaultIntervalType("2Y",mc,2,MarketIntervalUnit.MONTH,startTime,false,null);
+     val itvType1Y=new DefaultIntervalType("1Y",mc,1,MarketIntervalUnit.YEAR,startTime,false,null);
+     val itvType1M=new DefaultIntervalType("1M",mc,1,MarketIntervalUnit.MONTH,startTime,false,null);
+     val itvType1D=new DefaultIntervalType("1D",mc,1,MarketIntervalUnit.DAY,startTime,false,null);
+     val itvType1H=new DefaultIntervalType("1H",mc,1,MarketIntervalUnit.HOUR,startTime,false,null);
+     val itvType1Q=new DefaultIntervalType("1Q",mc,15,MarketIntervalUnit.MINUTE,startTime,false,null);
+     val itvType5m=new DefaultIntervalType("5m",mc,5,MarketIntervalUnit.MINUTE,startTime,false,null);
      val rootNode:Elem=
       <MktIntervalTypes>
-        {itvType1.toXML}
-        {itvType3.toXML}
-        {itvType4.toXML}
-        {itvType5.toXML}
-        {itvType6.toXML}
-        {itvType7.toXML}
-        {itvType8.toXML}
+        {itvType3Y.toXML}
+        {itvType1Y.toXML}
+        {itvType1M.toXML}
+        {itvType1D.toXML}
+        {itvType1H.toXML}
+        {itvType1Q.toXML}
+        {itvType5m.toXML}
 </MktIntervalTypes>;
  scala.xml.XML.save(fileName, rootNode, "UTF-8", true, null);
 }
@@ -77,18 +77,20 @@ object Test extends App{
      val itvType5m=mc.getIntervalType("5m");
      val itv=itvType3Y.getStartingInterval;
      val startInclusive=LocalDateTime.of(2017, 1, 1, 0, 0);
-     val endExclusive=LocalDateTime.of(2018, 1, 4, 0, 1);
+     val endExclusive=LocalDateTime.of(2017, 1, 2, 0, 0);
      val itv1=mc.getIntervalAt(startInclusive, endExclusive)
      println(itv1);
      
      println("---------------------------------------------------")
      //val itvList=itvType1D.getIntervalsCross(startInclusive, endExclusive);
-     val itvList=mc.getIntervalsTo(PredefIntverType.ONE_DAY,  endExclusive);
+     val itvList=mc.getIntervalsCross(itvType1Q, startInclusive, endExclusive)
+     println(itv1.getSubIntervalCounts(itvType1Q));
      for (itv<-itvList) {
        println(itv.toString()+":"+itv.isBefor(endExclusive)+" : "+itv.encode);
      }
-    
-              
+     val itv2=mc.decode("5m@2017-01-01T23:55:00");
+      println("---------------------------------------------------")   
+     println(itv2.intervalType)
 
 }
 
