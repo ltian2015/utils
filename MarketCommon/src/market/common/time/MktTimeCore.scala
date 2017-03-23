@@ -194,13 +194,9 @@ object PredefIntverType extends Enumeration
     */
    def getIntervalAt(startInclusive:LocalDateTime,endExclusive:LocalDateTime):MktInterval={
      val itvList=for{itvType<-this.intervalTypes
-          itvMaybe:Option[MktInterval]=itvType.getMktIntervalAt(startInclusive, endExclusive);
-          hasValue:Boolean=itvMaybe match{
-            case Some(x)=> true;
-            case None=>false;
-          }
-          if (hasValue)
-      } yield itvMaybe.get;
+          itv=itvType.getIntervalAt(startInclusive, endExclusive);
+          if (itv!=null)
+      } yield itv;
       if (itvList.size>1) 
         throw new Exception("系统时间段类型配置异常，相同自然时间段存在两种不同类型的市场时间段");
       else if(itvList.size==0)  null;
@@ -233,14 +229,14 @@ object PredefIntverType extends Enumeration
    */
    def getMktIntervalsBetween(predefType:PredefIntverType.PredefIntverType,startInclusive:LocalDateTime,endExclusive:LocalDateTime)={
       val itvType=this.getIntervalType(predefType);
-      itvType.getMktIntervalsBetween(startInclusive,endExclusive);
+      itvType.getIntervalsBetween(startInclusive,endExclusive);
   }
   /**
    * 得到给定时段类型下，包含给定自然时间点的市场时间段 
    */
    def getMktIntervalInclude(predefType:PredefIntverType.PredefIntverType,pointInclusive:LocalDateTime):MktInterval={
       val itvType=this.getIntervalType(predefType);
-      itvType.getMktIntervalInclude(pointInclusive);
+      itvType.getIntervalInclude(pointInclusive);
    }
    /**
    * 得到给定时段类型下，与给定自然时间段相交的市场时间段。
@@ -321,7 +317,7 @@ trait TimeInterval
    def toDuration:Duration=Duration.between(this.start, this.end);
    def toPeriod:Period=Period.between(this.start.toLocalDate(), this.end.toLocalDate());
      /**
-    * 是否在给定自然时间点之后
+    * 是否在给定自然时间点之后,时段上所有点都在给定点之后。
     */
    def isAfter(point:LocalDateTime):Boolean=this.start.isAfter(point);
       /**
@@ -331,7 +327,7 @@ trait TimeInterval
      if (other==null ) false else  this.start.isAfter(other.end);
    }
     /**
-    * 是否在给定自然时间点之前
+    * 是否在给定自然时间点之前，如果true，则时段上所有点都在给定点之前。时段的尾点与给点相同也是true
     */
    def isBefor(point:LocalDateTime):Boolean={!(this.end.isAfter(point))};
     /**
@@ -435,7 +431,7 @@ trait MktInterval extends TimeInterval with Ordered[MktInterval] with Comparable
    */
    def next(overUpperBound:Boolean=false):MktInterval={
      val nextStar:LocalDateTime=this.end.plusSeconds(1);
-     val nextItv=this.intervalType.getMktIntervalInclude(nextStar);
+     val nextItv=this.intervalType.getIntervalInclude(nextStar);
      if ((overUpperBound)||(!this.isTailOfUpper)) nextItv else throw new Exception("next操作已超时段边界");
    }
    /**
@@ -445,7 +441,9 @@ trait MktInterval extends TimeInterval with Ordered[MktInterval] with Comparable
    def nextIntervals(step:Int,overUpperBound:Boolean=false):List[MktInterval]={ 
       val listBf:ListBuffer[MktInterval]=new ListBuffer();
       for(i<- 1 to step) {
-        val itv=this.next(true) ;
+        val nextStart=this.timePlusByUnit(this.start, 
+            i*this.intervalType.unitCount, this.intervalType.intervalUnit);
+        val itv=this.intervalType.getIntervalInclude(nextStart) ;
         if((overUpperBound)|| itv.start.isBefore(this.getUpperInterval.end)) listBf += itv;
       }
       listBf.toList;
@@ -458,7 +456,7 @@ trait MktInterval extends TimeInterval with Ordered[MktInterval] with Comparable
          val priorStart:LocalDateTime=timePlusByUnit(this.start, - this.intervalType.unitCount ,this.intervalType.intervalUnit);
          val higherItv=this.getUpperInterval;
          if((overUpperBound)||(priorStart.isBefore(higherItv.start)))
-               this.intervalType.getMktIntervalInclude(priorStart);
+               this.intervalType.getIntervalInclude(priorStart);
          else throw new Exception("prior操作已超时段边界");
    }
    /**
@@ -466,9 +464,12 @@ trait MktInterval extends TimeInterval with Ordered[MktInterval] with Comparable
     */
    def priorIntervals(step:Int,overUpperBound:Boolean=false):List[MktInterval]={ 
       val listBf:ListBuffer[MktInterval]=new ListBuffer();
-      for(i<- 1 to step) {
-        val itv=this.prior(true) ;
-        if((overUpperBound)|| itv.end.isAfter(this.getUpperInterval.start)) listBf += itv;
+      for(i<- 1 to step ) {
+        val priorStart:LocalDateTime=timePlusByUnit(this.start, - (step+1-i)*this.intervalType.unitCount ,this.intervalType.intervalUnit);
+        if (!priorStart.isBefore(this.intervalType.startTime)) {
+             val itv=this.intervalType.getIntervalInclude(priorStart);
+             if((overUpperBound)|| itv.end.isAfter(this.getUpperInterval.start)) listBf += itv;
+        }
       }
       listBf.toList;
    }
@@ -476,20 +477,20 @@ trait MktInterval extends TimeInterval with Ordered[MktInterval] with Comparable
     *得到指定步长的前继时段列表，如果允许超界overUpperBound=true，则永远会返回指定步长的时段列表，
     *否则返回在上级时段边界以内的小于或等于指定步长的列表。缺省不允许超界
     */
-   def getUpperInterval:MktInterval=this.intervalType.getUpperType.getMktIntervalInclude(this.start);
+   def getUpperInterval:MktInterval=this.getUpperInterval(this.intervalType.getUpperType);
    /**
     * 
     */
    def getUpperInterval(upperType:MarketIntervalType):MktInterval={
-      require((upperType !=null)&&(upperType <= this.intervalType),"给定的时段类型不是上级时段");
-      upperType.getMktIntervalInclude(this.start);
+      require((upperType !=null)&&(upperType>this.intervalType),"给定的时段类型不是上级时段");
+      upperType.getIntervalInclude(this.start);
    }
    /**
     * 
     */
    def getHeadSubInterval(subItvType:MarketIntervalType):MktInterval={
      require((subItvType!=null)&&(subItvType<this.intervalType));
-     subItvType.getMktIntervalInclude(this.start);
+     subItvType.getIntervalInclude(this.start);
    }
    /**
     * 
@@ -502,7 +503,7 @@ trait MktInterval extends TimeInterval with Ordered[MktInterval] with Comparable
       require((subItvType!=null)&&(subItvType<this.intervalType));
       val tailSubStart=this.timePlusByUnit(this.end,
              -1 * subItvType.unitCount, subItvType.intervalUnit);
-      subItvType.getMktIntervalInclude(tailSubStart);
+      subItvType.getIntervalInclude(tailSubStart);
    }
    /**
     * 
@@ -517,23 +518,24 @@ trait MktInterval extends TimeInterval with Ordered[MktInterval] with Comparable
     */
    def getSubIntervals(subType:MarketIntervalType):List[MktInterval]={
       require((subType!=null)&&(subType<this.intervalType),"给定的时段类型不是下级时段");
-      val lowerItvlStart:LocalDateTime=subType.alaignToLeft(this.start);
-      subType.getMktIntervalsBetween(this.start,this.end);
+      //val lowerItvlStart:LocalDateTime=subType.alaignToLeft(this.start);
+      subType.getIntervalsBetween(this.start,this.end);
    }  
    /**
     * 得到指定级别的下级时段的数量。
     */
-   def getSubIntervalCounts():Int=this.getSubIntervalCounts(this.intervalType.getSubType);
+   def getSubIntervalCounts:Int=this.getSubIntervalCounts(this.intervalType.getSubType);
    /**
     * 得到指定级别的下级时段的数量。
     */
-   def getSubIntervalCounts(litvType:MarketIntervalType):Int={
-           if (litvType==litvType.mktCalendar.getMinIntervalType) 0
+   def getSubIntervalCounts(subItvType:MarketIntervalType):Int={
+           if (this.intervalType==this.intervalType.mktCalendar.getMinIntervalType) 0
            else {
-             if ((litvType >this.intervalType)||(litvType.equals(this.intervalType)))
+             if ((subItvType >this.intervalType)||(subItvType.equals(this.intervalType)))
                  throw new Exception("给定的时段类型不是下级时段");
-             val chronoUnitForLitvType:ChronoUnit=MarketIntervalUnit.toChronoUnit(litvType.intervalUnit);
-             (this.end.until(this.start, chronoUnitForLitvType)*this.intervalType.unitCount / litvType.unitCount).toInt;
+             val chronoUnitForLitvType:ChronoUnit=MarketIntervalUnit.toChronoUnit(subItvType.intervalUnit);
+             val count=(this.start.until(this.end, chronoUnitForLitvType)/ subItvType.unitCount).toInt;
+             count;
            }
    }
   
@@ -622,37 +624,55 @@ trait MarketIntervalType extends   Ordered[MarketIntervalType] with Comparable[M
    /**
     * 获得该类型的时间段的在所在交易中心的起始时间段。
     */
-  def getStartingInterval:MktInterval=this.getMktIntervalInclude(this.startTime);
+  def getStartingInterval:MktInterval=this.getIntervalInclude(this.startTime);
   /**
    * 获取从该类型时间段从设定的开始时间到包括给定自然时间点时所经历的所有时间段。
    * 
    */
   def getIntervalsTo(pointInclusive:LocalDateTime)={
-    this.getIntervalsCross(this.startTime,pointInclusive);
+    val list=this.getIntervalsCross(this.startTime,pointInclusive);
+    val lastItv=list.last;
+    if (!lastItv.end.isEqual(pointInclusive)) list else {
+       val itv=this.getIntervalInclude(pointInclusive);
+       list:::itv::Nil;
+    }
   }
   /**
    * 获取从该类型时间段从设定的开始时间到给定自然时间点之前所经历的所有时间段。
    */
   def getIntervalsUntil(pointExclusive:LocalDateTime)={
     val list=this.getIntervalsCross(this.startTime,pointExclusive);
-    if (list.size<=1)  Nil else list.slice(0, list.size -1)
+    for{ itv<-list;
+         if (itv.isBefor(pointExclusive))
+    }
+    yield itv;
+   
   }
    /**
    * 得到在给定自然时间段内的市场时间段 
    */
-   def getMktIntervalsBetween(startInclusive:LocalDateTime,endExclusive:LocalDateTime)={
+   def getIntervalsBetween(startInclusive:LocalDateTime,endExclusive:LocalDateTime)={
       val itvList=this.getIntervalsCross(startInclusive,endExclusive);
       for{
            itv<-itvList
-           if (!itv.isBefor(startInclusive))&&(!itv.isAfter(endExclusive))
-      }yield itv;
+           if (!itv.isBefor(startInclusive))&&(itv.isBefor(endExclusive))
+      }
+      yield itv;
       
+  }
+   def getIntervalAt(startInclusive:LocalDateTime,endExclusive:LocalDateTime):MktInterval={
+     val itvMaybe=this.getOptionIntervalAt(startInclusive,endExclusive);
+     itvMaybe match{
+            case Some(itv)=> itv;
+            case None=>null;
+     }
   }
    /**
     * 
     */
-  def getMktIntervalAt(startInclusive:LocalDateTime,endExclusive:LocalDateTime):Option[MktInterval]={
-    val itvMaybe=this.getMktIntervalInclude(startInclusive);
+  
+  def getOptionIntervalAt(startInclusive:LocalDateTime,endExclusive:LocalDateTime):Option[MktInterval]={
+    val itvMaybe=this.getIntervalInclude(startInclusive);
     if (!itvMaybe.start.equals(startInclusive)|| !itvMaybe.end.equals(endExclusive))
        None;
     else Some(itvMaybe);
@@ -661,7 +681,7 @@ trait MarketIntervalType extends   Ordered[MarketIntervalType] with Comparable[M
   /**
    * 得到包含给定自然时间点的市场时间段 
    */
-   def getMktIntervalInclude(pointInclusive:LocalDateTime):MktInterval;
+   def getIntervalInclude(pointInclusive:LocalDateTime):MktInterval;
    /**
    * 得到与给定自然时间段相交的市场时间段。
    */
@@ -713,7 +733,7 @@ abstract class  AbstractMarketIntervalType (val id:String, val mktCalendar:MktCa
      def getIntervalsCross(startInclusive:LocalDateTime,endExclusive:LocalDateTime):List[MktInterval]={
          def createIntervals(startInclusive:LocalDateTime,endExclusive:LocalDateTime,
             litvType:MarketIntervalType,litvList:ListBuffer[MktInterval]):Unit={
-               if (!startInclusive.isAfter(endExclusive))  { 
+               if (startInclusive.isBefore(endExclusive))  { 
                  val lowerItvl:MktInterval=new DefaultMarketInterval(startInclusive,litvType);
                  //对于连续的时间轴来说，上一段时间的结尾点就是下一段时间的开始点。
                  val startTime:LocalDateTime=lowerItvl.end;
@@ -729,7 +749,7 @@ abstract class  AbstractMarketIntervalType (val id:String, val mktCalendar:MktCa
      /**
       *得到包含给定自然时间点的市场时间段 
       */
-     def getMktIntervalInclude(pointInclusive:LocalDateTime):MktInterval={
+     def getIntervalInclude(pointInclusive:LocalDateTime):MktInterval={
          require(!pointInclusive.isBefore(this.startTime));
          val formalStart=this.alaignToLeft(pointInclusive);
          new DefaultMarketInterval(formalStart,this);
