@@ -7,12 +7,13 @@ import java.time.format.DateTimeFormatter
 import market.common.time.defaultimpl._
 
 object RepositoryImpl extends MktCalendarRepository{
-  val dir=".\\resource\\";
-  val tcConfigFile=dir+"TradeCenterConfig.xml"
-  val tcIntConfigFilePrex=dir+"MarketIntervalTypeConfig."
+  //val dir=".\\resource\\";
+  //JAR文件所在路径
+  val tcConfigUrl:java.net.URL=this.getClass.getResource("/resource/TradeCenterConfig.xml");
   def  loadRegisteredIntervalTypes(tradeCenterId:String):List[MarketIntervalType]=
   {
-    val rootNode=scala.xml.XML.load(tcIntConfigFilePrex+tradeCenterId+".xml");
+    val itvTypeConfigUrl=this.getClass.getResource("/resource/MarketIntervalTypeConfig."+tradeCenterId+".xml");
+    val rootNode=scala.xml.XML.load(itvTypeConfigUrl);
     val listBuffer=new ListBuffer[MarketIntervalType]();
     val calendar=DefaultCalendarFactory().getCalendar(tradeCenterId);
     for(node <- (rootNode \ "MarketIntervalType")){
@@ -38,7 +39,7 @@ object RepositoryImpl extends MktCalendarRepository{
      //TODO
   };
   def loadTradeCenter(tradeCenterId:String):TradeCenter={
-    val rootNode=scala.xml.XML.load(tcConfigFile);
+    val rootNode=scala.xml.XML.load(tcConfigUrl);
     val listBuffer=new ListBuffer[TradeCenter]();
     for(node <- (rootNode \ "TradeCenter")){
        if ((node \@"id")==tradeCenterId)

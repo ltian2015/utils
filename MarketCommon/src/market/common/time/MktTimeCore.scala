@@ -56,13 +56,14 @@ object MarketIntervalUnit extends Enumeration
 object PredefIntverType extends Enumeration 
 {
    type PredefIntverType=Value;
-   val THREE_YEAR,TWO_YEAR,ONE_YEAR,ONE_MONTH,ONE_DAY,ONE_QUARTER,FIVE_MINUTE=Value;
+   val THREE_YEAR,TWO_YEAR,ONE_YEAR,ONE_MONTH,ONE_DAY,ONE_HOUR,ONE_QUARTER,FIVE_MINUTE=Value;
    def toTuple(predefType:PredefIntverType.PredefIntverType)={ predefType match{
          case THREE_YEAR=>(3,MarketIntervalUnit.YEAR);
          case TWO_YEAR=>(2,MarketIntervalUnit.YEAR);
          case ONE_YEAR=>(1,MarketIntervalUnit.YEAR);
          case ONE_MONTH=>(1,MarketIntervalUnit.MONTH);
          case ONE_DAY=>(1,MarketIntervalUnit.DAY);
+         case ONE_HOUR=>(1,MarketIntervalUnit.HOUR);
          case ONE_QUARTER=>(15,MarketIntervalUnit.MINUTE);
          case FIVE_MINUTE=>(5,MarketIntervalUnit.MINUTE);
        }
@@ -306,7 +307,7 @@ object PredefIntverType extends Enumeration
    def getIntervalsBetween(itvType:MarketIntervalType,startInclusive:LocalDateTime,endExclusive:LocalDateTime)={
       itvType.getIntervalsBetween(startInclusive,endExclusive);
   }
-     // for java lis
+     // for java list
   def getIntervalListBetween(itvType:MarketIntervalType,
           startInclusive:LocalDateTime,endExclusive:LocalDateTime):java.util.List[MktInterval]={
        getIntervalsBetween(itvType,startInclusive,endExclusive);
