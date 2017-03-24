@@ -13,6 +13,8 @@ object DefaultCalendarFactory
  {
    val  repositoryImpl:MktCalendarRepository=RepositoryImpl;
    def apply():MktCalendarFactory=new DefaultMktCalendarFactory(repositoryImpl);
+   //for java
+   def getInstance()=this.apply();
  }
 
  private final class DefaultMktCalendarFactory(val mktCalendarRepo:MktCalendarRepository) extends MktCalendarFactory{
