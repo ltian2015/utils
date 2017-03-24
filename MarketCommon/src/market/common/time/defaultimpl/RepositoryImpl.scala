@@ -7,18 +7,15 @@ import java.time.format.DateTimeFormatter
 import market.common.time.defaultimpl._
 
 object RepositoryImpl extends MktCalendarRepository{
-  //val dir=".\\resource\\";
-  //JAR文件所在路径
   val tcConfigUrl:java.net.URL=this.getClass.getResource("/resource/TradeCenterConfig.xml");
-  def  loadRegisteredIntervalTypes(tradeCenterId:String):List[MarketIntervalType]=
-  {
+  def  loadRegisteredIntervalTypes(tradeCenterId:String):List[MarketIntervalType]={
     val itvTypeConfigUrl=this.getClass.getResource("/resource/MarketIntervalTypeConfig."+tradeCenterId+".xml");
     val rootNode=scala.xml.XML.load(itvTypeConfigUrl);
     val listBuffer=new ListBuffer[MarketIntervalType]();
     val calendar=DefaultCalendarFactory().getCalendar(tradeCenterId);
     for(node <- (rootNode \ "MarketIntervalType")){
-            val startTimeText=(node \ "@startTime").text;
-            val startTime:LocalDateTime=LocalDateTime.parse(startTimeText,DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            val originTimeText=(node \ "@originTime").text;
+            val startTime:LocalDateTime=LocalDateTime.parse(originTimeText,DateTimeFormatter.ISO_LOCAL_DATE_TIME);
             val isStop=(node \ "@isStop").text.toBoolean;
             val stopTimeText=(node \ "@stopTime").text;
             val stopTime:LocalDateTime=if (stopTimeText=="" || stopTimeText=="-") null 
@@ -37,7 +34,7 @@ object RepositoryImpl extends MktCalendarRepository{
   }
   def  updateIntervalType(itvType:MarketIntervalType):Unit={
      //TODO
-  };
+  }
   def loadTradeCenter(tradeCenterId:String):TradeCenter={
     val rootNode=scala.xml.XML.load(tcConfigUrl);
     val listBuffer=new ListBuffer[TradeCenter]();
@@ -55,6 +52,6 @@ object RepositoryImpl extends MktCalendarRepository{
     else if (listBuffer.size>1)
         throw new Exception("");
     else listBuffer(0);
-  };
+  }
   
 }

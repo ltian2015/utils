@@ -11,8 +11,9 @@ import java.time.format.DateTimeFormatter
 
 object DefaultCalendarFactory
  {
-   val  repositoryImpl:MktCalendarRepository=RepositoryImpl;
-   def apply():MktCalendarFactory=new DefaultMktCalendarFactory(repositoryImpl);
+   private val  repositoryImpl:MktCalendarRepository=RepositoryImpl;
+   private lazy val factory=new DefaultMktCalendarFactory(repositoryImpl);
+   def apply():MktCalendarFactory=this.factory;
    //for java
    def getInstance()=this.apply();
  }
@@ -32,9 +33,9 @@ object DefaultCalendarFactory
  }
  final class DefaultIntervalType(id:String, mktCalendar:MktCalendar, 
              unitCount:Int, intervalUnit:MarketIntervalUnit.MarketIntervalUnit, 
-              startTime:LocalDateTime,isStop:Boolean, stopTime:LocalDateTime) 
+              originTime:LocalDateTime,isStop:Boolean, stopTime:LocalDateTime) 
              extends AbstractMarketIntervalType(id,mktCalendar,
-          unitCount,intervalUnit,startTime,isStop ,stopTime)
+          unitCount,intervalUnit,originTime,isStop ,stopTime)
 {
     
 }

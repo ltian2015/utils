@@ -66,7 +66,10 @@ object Test extends App{
  scala.xml.XML.save(fileName, rootNode, "UTF-8", true, null);
 }
 
-  // creatIntervalConfig("kunming");
+   creatIntervalConfig("kunming");
+  /**
+   * 
+  
      val mc: MktCalendar=DefaultCalendarFactory().getCalendar("kunming")
      val itvType3Y:MarketIntervalType=mc.getIntervalType(PredefIntverType.THREE_YEAR);  
      val itvType1Y=mc.getIntervalType(PredefIntverType.ONE_YEAR);
@@ -75,7 +78,7 @@ object Test extends App{
      val itvType1H=mc.getIntervalType("1H");
      val itvType1Q=mc.getIntervalType("1Q");
      val itvType5m=mc.getIntervalType("5m");
-     val itv=itvType3Y.getStartingInterval;
+     val itv=itvType3Y.getOrginInterval;
      val startInclusive=LocalDateTime.of(2017, 1, 1, 0, 0);
      val endExclusive=LocalDateTime.of(2017, 1, 2, 0, 0);
      val itv1=mc.getIntervalAt(startInclusive, endExclusive)
@@ -91,6 +94,9 @@ object Test extends App{
      val itv2=mc.decode("5m@2017-01-01T23:55:00");
       println("---------------------------------------------------")   
      println(itv2.intervalType)
-
+     val itv3=itv2.prior(true);
+      println(itv2>=itv3);
+      *  */
+      
 }
 
