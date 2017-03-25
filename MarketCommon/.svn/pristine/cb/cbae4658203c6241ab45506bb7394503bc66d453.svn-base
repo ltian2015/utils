@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<MktIntervalTypes>
+        <MarketIntervalType id="3Y" tradeCenterId="kunming" unitCount="3" intervalUnit="YEAR" originTime="2017-01-01T00:00:00" isStop="false" stopTime=""/>
+        <MarketIntervalType id="1Y" tradeCenterId="kunming" unitCount="1" intervalUnit="YEAR" originTime="2017-01-01T00:00:00" isStop="false" stopTime=""/>
+        <MarketIntervalType id="1M" tradeCenterId="kunming" unitCount="1" intervalUnit="MONTH" originTime="2017-01-01T00:00:00" isStop="false" stopTime=""/>
+        <MarketIntervalType id="1D" tradeCenterId="kunming" unitCount="1" intervalUnit="DAY" originTime="2017-01-01T00:00:00" isStop="false" stopTime=""/>
+        <MarketIntervalType id="1H" tradeCenterId="kunming" unitCount="1" intervalUnit="HOUR" originTime="2017-01-01T00:00:00" isStop="false" stopTime=""/>
+        <MarketIntervalType id="1Q" tradeCenterId="kunming" unitCount="15" intervalUnit="MINUTE" originTime="2017-01-01T00:00:00" isStop="false" stopTime=""/>
+        <MarketIntervalType id="5m" tradeCenterId="kunming" unitCount="5" intervalUnit="MINUTE" originTime="2017-01-01T00:00:00" isStop="false" stopTime=""/>
+</MktIntervalTypes>
