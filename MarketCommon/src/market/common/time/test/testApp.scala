@@ -98,5 +98,6 @@ object Test extends App{
      
      println("hello svn");
      println("hello git");
+     println("hello exit svn to git")
 }
 
