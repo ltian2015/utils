@@ -34,9 +34,7 @@ object DefaultCalendarFactory{
    require(tradeCenterId!=null,"构造MarketCalendar需要指定所在交易中心ID参数 "); 
    require(decoderFactory!=null,"构造MarketCalendar需要指定解码器工厂参数 "); 
    private lazy val repoImpl:MktCalendarRepository=new RepositoryImpl(this);
-   private lazy val tc={ 
-     repoImpl.loadTradeCenter;
-   }
+   private lazy val tc=repoImpl.loadTradeCenter;
    require(tc!=null,"指定的交易中心ID参数无效");
    /**
     * 实现了特质所要求的方法。

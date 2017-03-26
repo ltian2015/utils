@@ -13,7 +13,7 @@ class RepositoryImpl(val calendar:MktCalendar) extends MktCalendarRepository{
     val tradeCenterId=this.calendar.tradeCenterId;
     val itvTypeConfigUrl=this.getClass.getResource("/resource/MarketIntervalTypeConfig."+tradeCenterId+".xml");
     val rootNode=scala.xml.XML.load(itvTypeConfigUrl);
-    val listBuffer=new ListBuffer[MarketIntervalType]();
+    val listBuffer=ListBuffer[MarketIntervalType]();
     for(node <- (rootNode \ "MarketIntervalType")){
             val originTimeText=(node \ "@originTime").text;
             val startTime:LocalDateTime=LocalDateTime.parse(originTimeText,DateTimeFormatter.ISO_LOCAL_DATE_TIME);
