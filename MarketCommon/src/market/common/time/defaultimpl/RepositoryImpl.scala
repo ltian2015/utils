@@ -59,7 +59,7 @@ class RepositoryImpl(val calendar:MktCalendar) extends MktCalendarRepository{
 }
 /**
  * 为Java 实现提供了一个虚基类,Java实现可以如下：
- * class JavaRepoImpl extends  RepositoryImplForJava
+ * class JavaRepoImpl extends  BaseRepositoryForJavaImpl
  {
 	public JavaRepoImpl(MktCalendar calendar)
 	{
@@ -86,7 +86,7 @@ class RepositoryImpl(val calendar:MktCalendar) extends MktCalendarRepository{
 
 }
  */
-  abstract class  RepositoryImplForJava(val calendar:MktCalendar) extends MktCalendarRepository{
+  abstract class  BaseRepositoryForJavaImpl(val calendar:MktCalendar) extends MktCalendarRepository{
       protected def  loadRegisteredIntervalTypeList:java.util.List[MarketIntervalType];
       override def  loadRegisteredIntervalTypes:List[MarketIntervalType]=this.loadRegisteredIntervalTypeList.asScala.toList;
       def  saveNewIntervalType(itvType:MarketIntervalType):Unit;
