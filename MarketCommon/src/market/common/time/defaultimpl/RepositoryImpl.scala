@@ -5,6 +5,7 @@ import scala.collection.mutable.ListBuffer;
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import market.common.time.defaultimpl._
+import scala.collection.JavaConverters._;
 
 class RepositoryImpl(val calendar:MktCalendar) extends MktCalendarRepository{
   val tcConfigUrl:java.net.URL=this.getClass.getResource("/resource/TradeCenterConfig.xml");
@@ -13,7 +14,6 @@ class RepositoryImpl(val calendar:MktCalendar) extends MktCalendarRepository{
     val itvTypeConfigUrl=this.getClass.getResource("/resource/MarketIntervalTypeConfig."+tradeCenterId+".xml");
     val rootNode=scala.xml.XML.load(itvTypeConfigUrl);
     val listBuffer=new ListBuffer[MarketIntervalType]();
-    println("load interval type..............................");
     for(node <- (rootNode \ "MarketIntervalType")){
             val originTimeText=(node \ "@originTime").text;
             val startTime:LocalDateTime=LocalDateTime.parse(originTimeText,DateTimeFormatter.ISO_LOCAL_DATE_TIME);
@@ -38,7 +38,6 @@ class RepositoryImpl(val calendar:MktCalendar) extends MktCalendarRepository{
   }
   
   def loadTradeCenter:TradeCenter={
-     println("load tradeCenter..............................");
     val tradeCenterId:String=this.calendar.tradeCenterId;
     val rootNode=scala.xml.XML.load(tcConfigUrl);
     val listBuffer=new ListBuffer[TradeCenter]();
@@ -57,5 +56,40 @@ class RepositoryImpl(val calendar:MktCalendar) extends MktCalendarRepository{
         throw new Exception("");
     else listBuffer(0);
   }
+}
+/**
+ * 为Java 实现提供了一个虚基类,Java实现可以如下：
+ * class JavaRepoImpl extends  RepositoryImplForJava
+ {
+	public JavaRepoImpl(MktCalendar calendar)
+	{
+		super(calendar);
+	}
+	
+	public java.util.List<MarketIntervalType>loadRegisteredIntervalTypeList()
+	{
+		
+		return null;
+	}
+	public void saveNewIntervalType(MarketIntervalType itvType)
+	{
+		
+	}
+	public void updateIntervalType(MarketIntervalType itvType)
+	{
+		
+	}
+	public  TradeCenter loadTradeCenter()
+	{
+		return null;
+	}
 
+}
+ */
+  abstract class  RepositoryImplForJava(val calendar:MktCalendar) extends MktCalendarRepository{
+      protected def  loadRegisteredIntervalTypeList:java.util.List[MarketIntervalType];
+      override def  loadRegisteredIntervalTypes:List[MarketIntervalType]=this.loadRegisteredIntervalTypeList.asScala.toList;
+      def  saveNewIntervalType(itvType:MarketIntervalType):Unit;
+      def  updateIntervalType(itvType:MarketIntervalType):Unit;
+      def loadTradeCenter:TradeCenter;
 }
