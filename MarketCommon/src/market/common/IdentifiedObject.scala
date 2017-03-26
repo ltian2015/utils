@@ -110,6 +110,8 @@ trait TradeCenter
    def id:String;
    def name:String;
    def description:String;
+   def toXML=
+       <TradeCenter id={id} name={name} description={description} />
 }
 object BaseTradeCenter
 {
@@ -117,11 +119,11 @@ object BaseTradeCenter
   {
     new BaseTradeCenter(id,name,description);
   }
-}
-class BaseTradeCenter(val id:String,val name:String,val description:String="") extends TradeCenter
+  private class BaseTradeCenter(val id:String,val name:String,val description:String="") extends TradeCenter
 {
-  def toXML=
-       <TradeCenter id={id} name={name} description={description} />
+  
 }
+}
+
 ////////////////////////////////////////////////////////////////////////////////////
 

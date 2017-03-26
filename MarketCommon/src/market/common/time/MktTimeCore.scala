@@ -1,6 +1,6 @@
 package market.common.time
 import java.time.LocalDateTime
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 import java.time.MonthDay
 import java.time.ZoneOffset
 import java.lang.Comparable;
@@ -73,6 +73,9 @@ object PredefIntverType extends Enumeration
  */
  trait MktCalendarFactory
  {
+   /**
+    * 构建市场日历的工厂可以根据交易中心的ID创建市场日历。
+    */
    def getCalendar(tradeCenterId:String):MktCalendar;
  }
  
@@ -84,10 +87,14 @@ object PredefIntverType extends Enumeration
    implicit def mktIntervalWrapper(itv:TimeInterval):MktInterval={
      this.getIntervalAt(itv.start, itv.end);
    }
-   //-------------------以下两个方法必须由实现类实现-----------------------------------------
+   //-------------------以下方法必须由实现类实现-----------------------------------------
+  
+    def  tradeCenterId:String;
+
    /**
     * 市场日历所在的交易中心
     */
+   
    def tradeCenter:TradeCenter;
    /**
     * 市场日历所在交易中心定义的所有时段类型列表
@@ -95,7 +102,7 @@ object PredefIntverType extends Enumeration
    
    def intervalTypes:List[MarketIntervalType];
    //for java
-   def getIntervalTypeList:java.util.List[MarketIntervalType]=this.intervalTypes;
+   def getIntervalTypeList:java.util.List[MarketIntervalType]=this.intervalTypes.asJava;
    def decoderFactory:IntervalDecoderFactory
    //-------------------------------------------------------------- 
   /**
@@ -224,7 +231,7 @@ object PredefIntverType extends Enumeration
   }
   //for java
   def getIntervalListTo(predefType:PredefIntverType.PredefIntverType,
-       pointInclusive:LocalDateTime):java.util.List[MktInterval]=getIntervalsTo(predefType,pointInclusive);
+       pointInclusive:LocalDateTime):java.util.List[MktInterval]=getIntervalsTo(predefType,pointInclusive).asJava;
   /**
    * 获取给定时段类型下，从该类型时间段从设定的开始时间到给定自然时间点之前所经历的所有时间段。
    */
@@ -234,7 +241,7 @@ object PredefIntverType extends Enumeration
   }
   //for java List
   def getIntervalListUntil(predefType:PredefIntverType.PredefIntverType,
-       pointInclusive:LocalDateTime):java.util.List[MktInterval]=getIntervalsUntil(predefType,pointInclusive);
+       pointInclusive:LocalDateTime):java.util.List[MktInterval]=getIntervalsUntil(predefType,pointInclusive).asJava;
   
    /**
    * 得到给定时段类型下，在给定自然时间段内的市场时间段 
@@ -247,7 +254,7 @@ object PredefIntverType extends Enumeration
   def getIntervalListBetween(predefType:PredefIntverType.PredefIntverType,
           startInclusive:LocalDateTime,
           endExclusive:LocalDateTime):java.util.List[MktInterval]={
-       getIntervalsBetween(predefType,startInclusive,endExclusive)
+       getIntervalsBetween(predefType,startInclusive,endExclusive).asJava
   }
   /**
    * 得到给定时段类型下，包含给定自然时间点的市场时间段 
@@ -268,7 +275,7 @@ object PredefIntverType extends Enumeration
   def getIntervalListCross(predefType:PredefIntverType.PredefIntverType,
           startInclusive:LocalDateTime,
           endExclusive:LocalDateTime):java.util.List[MktInterval]={
-       getIntervalsCross(predefType,startInclusive,endExclusive)
+       getIntervalsCross(predefType,startInclusive,endExclusive).asJava
   }
     /**
     * 获得给定时段类型下，在所在交易中心的起始时间段。
@@ -286,7 +293,7 @@ object PredefIntverType extends Enumeration
   // for java list
   def getIntervalListTo(itvType:MarketIntervalType,
           pointInclusive:LocalDateTime):java.util.List[MktInterval]={
-       getIntervalsTo(itvType,pointInclusive);
+       getIntervalsTo(itvType,pointInclusive).asJava;
   }
   /**
    * 获取给定时段类型下，从该类型时间段从设定的开始时间到给定自然时间点之前所经历的所有时间段。
@@ -297,7 +304,7 @@ object PredefIntverType extends Enumeration
   // for java list
   def getIntervalListUntil(itvType:MarketIntervalType,
           pointExclusive:LocalDateTime):java.util.List[MktInterval]={
-       getIntervalsUntil(itvType,pointExclusive);
+       getIntervalsUntil(itvType,pointExclusive).asJava;
   }
    /**
    * 得到给定时段类型下，在给定自然时间段内的市场时间段 
@@ -308,7 +315,7 @@ object PredefIntverType extends Enumeration
      // for java list
   def getIntervalListBetween(itvType:MarketIntervalType,
           startInclusive:LocalDateTime,endExclusive:LocalDateTime):java.util.List[MktInterval]={
-       getIntervalsBetween(itvType,startInclusive,endExclusive);
+       getIntervalsBetween(itvType,startInclusive,endExclusive).asJava;
   } 
   /**
    * 得到给定时段类型下，包含给定自然时间点的市场时间段 
@@ -325,63 +332,23 @@ object PredefIntverType extends Enumeration
      // for java list
   def getIntervalListCross(itvType:MarketIntervalType,
           startInclusive:LocalDateTime,endExclusive:LocalDateTime):java.util.List[MktInterval]={
-       getIntervalsCross(itvType,startInclusive,endExclusive);
+       getIntervalsCross(itvType,startInclusive,endExclusive).asJava;
   } 
 }
- 
+ /**
+  * 规范了为特定MarketCalendar进行数据持久化操作的行为，该特质实现者
+  * 必须知道其所服务的MarketCalendar对象。
+  */
  trait MktCalendarRepository
  {
-    def  loadRegisteredIntervalTypes(tradeCenterId:String):List[MarketIntervalType];
-   // def  loadRegisteredIntervalTypeList(tradeCenterId:String):java.util.List[MarketIntervalType];
+    def calendar:MktCalendar;
+    def  loadRegisteredIntervalTypes:List[MarketIntervalType];
     def  saveNewIntervalType(itvType:MarketIntervalType):Unit;
     def  updateIntervalType(itvType:MarketIntervalType):Unit;
-    def loadTradeCenter(tradeCenterId:String):TradeCenter;
+    def loadTradeCenter:TradeCenter;
  }
  
- /**
-  * 市场日历的缺省实现
-  */
- private class DefaultMarketCalendar(mktCalendarRepo:MktCalendarRepository,
-      tradeCenterId:String,val decoderFactory:IntervalDecoderFactory) extends MktCalendar
- {
-   require(mktCalendarRepo!=null,"构造MarketCalendar 需要指定MktCalendarRepository参数 "); 
-   require(tradeCenterId!=null,"构造MarketCalendar需要指定所在交易中心ID参数 "); 
-   require(decoderFactory!=null,"构造MarketCalendar需要指定解码器工厂参数 "); 
-   private lazy val tc=mktCalendarRepo.loadTradeCenter(tradeCenterId);
-   require(tc!=null,"指定的交易中心ID参数无效");
-   /**
-    * 实现了特质所要求的方法。
-    */
-   def tradeCenter:TradeCenter=tc;
-   /**
-    * 用一个常量的定义方式实现了特质所要求的方法。
-    */
-   lazy val intervalTypes:List[MarketIntervalType]={
-     val itvList=mktCalendarRepo.loadRegisteredIntervalTypes(tradeCenterId);
-     itvList.sortWith(_ > _);
-   }
-   doTypesChecking();
-   /**
-    * 进行市场时段类型检查，主要检查时段的一致性，所有时段不能有相同的跨越时间，
-    * 且在时间起点上必须对齐，确保能由大到小的切割。
-    */
-   private def  doTypesChecking()
-   {
-     //TODO
-   }
-   /**
-    * 只要市场日历对象所在的交易中心是一个，则认为两个市场对象日历相等。
-    */
-   override def equals(other:Any)=
-      {
-        other match {
-          case that:MktCalendar=>this.tc.id==that.tradeCenter.id;
-          case _ =>false;
-        }
-      }
-     override def hashCode:Int=this.tc.id.hashCode()*47;
-     override def toString:String="MktCalendar : "+this.tc.id;
- }
+
  ////////////////以下是关于时间段相关类的定义/////////////////////////////////////////////////////////////////////
 /**
  * 定义了所有自然时段对象的行为和属性规范
@@ -535,7 +502,7 @@ trait MktInterval extends TimeInterval with Ordered[MktInterval] with Comparable
    }
    //for java list
     def nextIntervalList(step:Int,overUpperBound:Boolean=false):java.util.List[MktInterval]={
-      this.nextIntervals(step,overUpperBound);
+      this.nextIntervals(step,overUpperBound).asJava;
     }
    /**
     * 得到前继时段，如果允许超界overUpperBound=true，则永远会返回对象，否则当超出上级时段边界后会抛出异常。
@@ -566,7 +533,7 @@ trait MktInterval extends TimeInterval with Ordered[MktInterval] with Comparable
    }
    //for java list
      def priorIntervalList(step:Int,overUpperBound:Boolean=false):java.util.List[MktInterval]={
-      this.priorIntervals(step,overUpperBound);
+      this.priorIntervals(step,overUpperBound).asJava;
     }
    /**
     *得到指定步长的前继时段列表，如果允许超界overUpperBound=true，则永远会返回指定步长的时段列表，
@@ -610,7 +577,7 @@ trait MktInterval extends TimeInterval with Ordered[MktInterval] with Comparable
    def getSubIntervals():List[MktInterval]=this.getSubIntervals(this.intervalType.getSubType);
    //for java list
    def getSubIntervalList():java.util.List[MktInterval]={
-      this.getSubIntervals();
+      this.getSubIntervals().asJava;
    }
     /**
     * 的到所有给定下级类型的下级时段列表
@@ -622,7 +589,7 @@ trait MktInterval extends TimeInterval with Ordered[MktInterval] with Comparable
    }  
    // for java 
    def getSubIntervalList(subType:MarketIntervalType):java.util.List[MktInterval]={
-     this.getSubIntervals(subType);
+     this.getSubIntervals(subType).asJava;
    }
    /**
     * 得到指定级别的下级时段的数量。
@@ -675,7 +642,11 @@ trait IntervalTypeDecoder
  */
 trait IntervalDecoderFactory
 {
-   def getDecoder(intervalTypeId:String):IntervalTypeDecoder;
+  /**
+   *  在本系统中，可能不同交易中心（在市场时间领域，有可认为由市场日历所代表）下的不同的市场类型的解码/编码器的实现可能不同，因此需要
+   *  给定的市场日历（代表了交易中心）和该市场日历中注册的市场时段类型，就可以得到该日历下，针对该时段类型的解码器。
+   */
+  def getDecoder(mktCalendar:MktCalendar,intervalTypeId:String):IntervalTypeDecoder;
 }
 
 /**
@@ -690,7 +661,7 @@ trait MarketIntervalType extends   Ordered[MarketIntervalType] with Comparable[M
   def  mktCalendar:MktCalendar;
   def  isStop:Boolean;
   def  stopTime:LocalDateTime;
-  def  decoder:IntervalTypeDecoder=mktCalendar.decoderFactory.getDecoder(id);
+  def  decoder:IntervalTypeDecoder=mktCalendar.decoderFactory.getDecoder(mktCalendar,id);
   def approximateMinutes:Int={ 
           val minutesOfUnit:Int= this.intervalUnit match { 
             case MarketIntervalUnit.MINUTE=>1
@@ -744,7 +715,7 @@ trait MarketIntervalType extends   Ordered[MarketIntervalType] with Comparable[M
   }
   //for java list
   def getIntervalListTo(pointInclusive:LocalDateTime):java.util.List[MktInterval]={
-    this.getIntervalsTo(pointInclusive);
+    this.getIntervalsTo(pointInclusive).asJava;
   }
   /**
    * 获取从该类型时间段从设定的开始时间到给定自然时间点之前所经历的所有时间段。
@@ -759,7 +730,7 @@ trait MarketIntervalType extends   Ordered[MarketIntervalType] with Comparable[M
   }
   //for java list
   def getIntervalListUntil(pointExclusive:LocalDateTime):java.util.List[MktInterval]={
-    this.getIntervalsUntil(pointExclusive);
+    this.getIntervalsUntil(pointExclusive).asJava;
   }
    /**
    * 得到在给定自然时间段内的市场时间段 
@@ -776,7 +747,7 @@ trait MarketIntervalType extends   Ordered[MarketIntervalType] with Comparable[M
    //for java list
    def getIntervalListBetween(startInclusive:LocalDateTime,
         endExclusive:LocalDateTime):java.util.List[MktInterval]={
-       this.getIntervalsBetween(startInclusive, endExclusive);
+       this.getIntervalsBetween(startInclusive, endExclusive).asJava;
    }
    def getIntervalAt(startInclusive:LocalDateTime,endExclusive:LocalDateTime):MktInterval={
      val itvMaybe=this.getOptionIntervalAt(startInclusive,endExclusive);
@@ -797,7 +768,7 @@ trait MarketIntervalType extends   Ordered[MarketIntervalType] with Comparable[M
   }
   def getIntervalListCross(startInclusive:LocalDateTime,
           endExclusive:LocalDateTime):java.util.List[MktInterval]={
-      this.getIntervalsCross(startInclusive, endExclusive);
+      this.getIntervalsCross(startInclusive, endExclusive).asJava;
   }
    //-----------------以下两个方法必须由具体实现类实现-----------------------------------------------
   /**

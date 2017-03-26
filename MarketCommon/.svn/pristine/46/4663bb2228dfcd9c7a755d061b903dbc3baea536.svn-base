@@ -21,7 +21,7 @@ object Test extends App{
   val tcConfigfileName=dir+"TradeCenterConfig.xml";
   val tcIntConfigFilePrex=dir+"MarketIntervalTypeConfig."
   private def creatTcXML={
-    val kunmingTc:TradeCenter=BaseTradeCenter("kunming","昆明电力交易中心","测试租户");
+    val kunmingTc:BaseTradeCenter=new BaseTradeCenter("kunming","昆明电力交易中心","测试租户");
     val rootNode=
       <TradeCenters>
     {kunmingTc.toXML};
@@ -65,10 +65,11 @@ object Test extends App{
 </MktIntervalTypes>;
  scala.xml.XML.save(fileName, rootNode, "UTF-8", true, null);
 }
+
   // creatIntervalConfig("kunming");
-     val factory1=DefaultCalendarFactory.getInstance();
-       val factory2=DefaultCalendarFactory.getInstance();
-     val mc: MktCalendar=factory1.getCalendar("kunming")
+
+  
+     val mc: MktCalendar=DefaultCalendarFactory().getCalendar("kunming")
      val itvType3Y:MarketIntervalType=mc.getIntervalType(PredefIntverType.THREE_YEAR);  
      val itvType1Y=mc.getIntervalType(PredefIntverType.ONE_YEAR);
      val itvType1M=mc.getIntervalType((1,MarketIntervalUnit.MONTH));
@@ -81,6 +82,7 @@ object Test extends App{
      val endExclusive=LocalDateTime.of(2017, 1, 2, 0, 0);
      val itv1=mc.getIntervalAt(startInclusive, endExclusive)
      println(itv1);
+     
      println("---------------------------------------------------")
      //val itvList=itvType1D.getIntervalsCross(startInclusive, endExclusive);
      val itvList=mc.getIntervalsCross(itvType1Q, startInclusive, endExclusive)
@@ -93,5 +95,8 @@ object Test extends App{
      println(itv2.intervalType)
      val itv3=itv2.prior(true);
       println(itv2>=itv3);
+     
+     println("hello svn");
+     println("hello git");
 }
 

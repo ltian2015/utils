@@ -6,13 +6,14 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import market.common.time.defaultimpl._
 
-object RepositoryImpl extends MktCalendarRepository{
+class RepositoryImpl(val calendar:MktCalendar) extends MktCalendarRepository{
   val tcConfigUrl:java.net.URL=this.getClass.getResource("/resource/TradeCenterConfig.xml");
-  def  loadRegisteredIntervalTypes(tradeCenterId:String):List[MarketIntervalType]={
+  def  loadRegisteredIntervalTypes:List[MarketIntervalType]={
+    val tradeCenterId=this.calendar.tradeCenterId;
     val itvTypeConfigUrl=this.getClass.getResource("/resource/MarketIntervalTypeConfig."+tradeCenterId+".xml");
     val rootNode=scala.xml.XML.load(itvTypeConfigUrl);
     val listBuffer=new ListBuffer[MarketIntervalType]();
-    val calendar=DefaultCalendarFactory().getCalendar(tradeCenterId);
+    println("load interval type..............................");
     for(node <- (rootNode \ "MarketIntervalType")){
             val originTimeText=(node \ "@originTime").text;
             val startTime:LocalDateTime=LocalDateTime.parse(originTimeText,DateTimeFormatter.ISO_LOCAL_DATE_TIME);
@@ -35,7 +36,10 @@ object RepositoryImpl extends MktCalendarRepository{
   def  updateIntervalType(itvType:MarketIntervalType):Unit={
      //TODO
   }
-  def loadTradeCenter(tradeCenterId:String):TradeCenter={
+  
+  def loadTradeCenter:TradeCenter={
+     println("load tradeCenter..............................");
+    val tradeCenterId:String=this.calendar.tradeCenterId;
     val rootNode=scala.xml.XML.load(tcConfigUrl);
     val listBuffer=new ListBuffer[TradeCenter]();
     for(node <- (rootNode \ "TradeCenter")){
@@ -53,5 +57,5 @@ object RepositoryImpl extends MktCalendarRepository{
         throw new Exception("");
     else listBuffer(0);
   }
-  
+
 }
