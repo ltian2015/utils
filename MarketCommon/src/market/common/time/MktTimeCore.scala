@@ -140,8 +140,8 @@ object PredefIntverType extends Enumeration
      for(itvType <- intervalTypes){
          if( itvType.id==typeId) listBuffer += itvType;
      }
-     require(listBuffer.size>1,"严重问题：可以找到多个相匹配的时段类型");
-     require(listBuffer.size==0,"严重问题：找不到相匹配的时段类型");
+     if (listBuffer.size>1) throw new Exception("严重问题：可以找到多个相匹配的时段类型");
+     if(listBuffer.size==0) throw new Exception("严重问题：找不到相匹配的时段类型");
      listBuffer(0);
    }
    /**
