@@ -342,13 +342,54 @@ object PredefIntverType extends Enumeration
   */
  trait MktCalendarRepository
  {
-    def calendar:MktCalendar;
     def  loadRegisteredIntervalTypes:List[MarketIntervalType];
     def  saveNewIntervalType(itvType:MarketIntervalType):Unit;
     def  updateIntervalType(itvType:MarketIntervalType):Unit;
     def loadTradeCenter:TradeCenter;
  }
- 
+ /**
+  * 为Scala 实现MktCalendarRepository提供了一个虚基类,
+  */
+ abstract class BaseMktCalendarRepository(val calendar:MktCalendar) extends MktCalendarRepository {
+   
+ }
+ /**
+ * 为Java 实现MktCalendarRepository提供了一个虚基类,Java实现可以如下：
+ * class JavaRepoImpl extends  BaseRepositoryForJava
+ {
+	public JavaRepoImpl(MktCalendar calendar)
+	{
+		super(calendar);
+	}
+	
+	public java.util.List<MarketIntervalType>loadRegisteredIntervalTypeList()
+	{
+		
+		return null;
+	}
+	public void saveNewIntervalType(MarketIntervalType itvType)
+	{
+		
+	}
+	public void updateIntervalType(MarketIntervalType itvType)
+	{
+		
+	}
+	public  TradeCenter loadTradeCenter()
+	{
+		return null;
+	}
+
+}
+ */
+  abstract class  BaseRepositoryForJava(val calendar:MktCalendar) extends MktCalendarRepository{
+      protected def  loadRegisteredIntervalTypeList:java.util.List[MarketIntervalType];
+      override def  loadRegisteredIntervalTypes:List[MarketIntervalType]=this.loadRegisteredIntervalTypeList.asScala.toList;
+      def  saveNewIntervalType(itvType:MarketIntervalType):Unit;
+      def  updateIntervalType(itvType:MarketIntervalType):Unit;
+      def loadTradeCenter:TradeCenter;
+}
+
 
  ////////////////以下是关于时间段相关类的定义/////////////////////////////////////////////////////////////////////
 /**
