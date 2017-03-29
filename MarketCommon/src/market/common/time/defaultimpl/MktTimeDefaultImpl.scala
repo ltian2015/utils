@@ -121,9 +121,9 @@ object DefaultCalendarFactory{
        }
     }
     if (listBuffer.isEmpty) 
-       throw new Exception("")
+       sys.error("在数据中心配置XML文件中加载不到Id为"+tradeCenterId+"的交易中心定义")
     else if (listBuffer.size>1)
-        throw new Exception("");
+        sys.error("在数据中心配置XML文件中加载了多个Id为"+tradeCenterId+"的交易中心定义");
     else listBuffer(0);
   }
 }
@@ -153,7 +153,7 @@ private final class  DefaultCommonDecoder(mktCalendar:MktCalendar,val intervalTy
 {
     require(mktCalendar!=null);
     private  val itvType=mktCalendar.getIntervalType(intervalTypeId);
-    if (itvType==null) throw new Exception("给定时段类型(id="+intervalTypeId+")不存在");
+    if (itvType==null) sys.error("给定时段类型(id="+intervalTypeId+")不存在");
     private val separator:String="@";
     
     def canDecode(code:String):Boolean={
@@ -161,16 +161,16 @@ private final class  DefaultCommonDecoder(mktCalendar:MktCalendar,val intervalTy
     } 
     def decode(code:String):MktInterval={
        val subStrs:Array[String]=code.split(separator);
-       if (subStrs.size!=2) throw new Exception("时段编码格式非法，无法解码");
+       if (subStrs.size!=2) sys.error ("时段编码格式非法，无法解码");
        val itvId:String=subStrs(0);
-       if (itvId!=intervalTypeId)throw new Exception("时段编码格式非法，无法解码");
+       if (itvId!=intervalTypeId)sys.error("时段编码格式非法，无法解码");
        val itvStartStr:String=subStrs(1);
        val itvStartTime:LocalDateTime=LocalDateTime.parse(itvStartStr, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-       if (itvStartTime==null) throw new Exception("时段编码格式非法，无法解码");
+       if (itvStartTime==null) sys.error("时段编码格式非法，无法解码");
        this.itvType.getIntervalInclude(itvStartTime);
     }
     def encode(itv:MktInterval):String={
-       if (itv.intervalType!=this.itvType) throw new Exception("给时段的类型(id="
+       if (itv.intervalType!=this.itvType) sys.error("给时段的类型(id="
               +itv.intervalType.id+")与解码器所设定的时段类型("+
               intervalTypeId+")不相匹配");
        intervalTypeId+this.separator+itv.start.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);

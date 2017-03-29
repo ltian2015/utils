@@ -45,7 +45,7 @@ object MarketIntervalUnit extends Enumeration
                case ChronoUnit.HOURS=>MarketIntervalUnit.HOUR;
                case ChronoUnit.MINUTES=>MarketIntervalUnit.MINUTE;
                case ChronoUnit.SECONDS=>MarketIntervalUnit.SECOND;
-               case _=> throw new Exception("给定的ChronoUnit没有相对应的MarketIntervalUnit");
+               case _=>sys.error("给定的ChronoUnit没有相对应的MarketIntervalUnit");
         }
     }
 }
@@ -116,8 +116,8 @@ object PredefIntverType extends Enumeration
            if(( itvType.unitCount==unitCount)&&(itvType.intervalUnit==intervalUnit))
               listBuffer += itvType;
        }
-       if (listBuffer.size>1) throw new Exception("严重问题：找到了多个相匹配的时段类型");
-       if (listBuffer.size==0) throw new Exception("严重问题：找不到相匹配的时段类型");
+       if (listBuffer.size>1) sys.error("严重问题：找到了多个相匹配的时段类型");
+       if (listBuffer.size==0) sys.error("严重问题：找不到相匹配的时段类型");
        listBuffer(0);
    }
    /**
@@ -140,8 +140,8 @@ object PredefIntverType extends Enumeration
      for(itvType <- intervalTypes){
          if( itvType.id==typeId) listBuffer += itvType;
      }
-     if (listBuffer.size>1) throw new Exception("严重问题：可以找到多个相匹配的时段类型");
-     if(listBuffer.size==0) throw new Exception("严重问题：找不到相匹配的时段类型");
+     if (listBuffer.size>1) sys.error("严重问题：可以找到多个相匹配的时段类型");
+     if(listBuffer.size==0) sys.error("严重问题：找不到相匹配的时段类型");
      listBuffer(0);
    }
    /**
@@ -184,8 +184,8 @@ object PredefIntverType extends Enumeration
            for(itvType <- intervalTypes){
                if( itvType.decoder.canDecode(code)) listBuffer += itvType;
            }
-           if (listBuffer.size>1) throw new Exception("严重问题：给定市场时段ID可以被多个时段类型解析");
-           if (listBuffer.size==0) new Exception("严重问题：没有时段类型可以解析给定市场时段ID");
+           if (listBuffer.size>1) sys.error("严重问题：给定市场时段ID可以被多个时段类型解析");
+           if (listBuffer.size==0) sys.error("严重问题：没有时段类型可以解析给定市场时段ID");
            listBuffer(0);
       }
       val decoderType:MarketIntervalType= getMatchType;
@@ -211,7 +211,7 @@ object PredefIntverType extends Enumeration
           if (itv!=null)
       } yield itv;
       if (itvList.size>1) 
-        throw new Exception("系统时间段类型配置异常，相同自然时间段存在两种不同类型的市场时间段");
+        sys.error("系统时间段类型配置异常，相同自然时间段存在两种不同类型的市场时间段");
       else if(itvList.size==0)  null;
       else itvList(0);
    }
@@ -526,7 +526,7 @@ trait MktInterval extends TimeInterval with Ordered[MktInterval] with Comparable
    def next(overUpperBound:Boolean=false):MktInterval={
      val nextStar:LocalDateTime=this.end.plusSeconds(1);
      val nextItv=this.intervalType.getIntervalInclude(nextStar);
-     if ((overUpperBound)||(!this.isTail)) nextItv else throw new Exception("next操作已超时段边界");
+     if ((overUpperBound)||(!this.isTail)) nextItv else sys.error("next操作已超时段边界");
    }
    /**
     * 得到指定步长的后续时段列表，如果允许超界overUpperBound=true，则永远会返回指定步长的时段列表，
@@ -556,8 +556,8 @@ trait MktInterval extends TimeInterval with Ordered[MktInterval] with Comparable
              val upperItv=this.getUpperInterval;
              if((overUpperBound)||(!priorStart.isBefore(upperItv.start)))
                this.intervalType.getIntervalInclude(priorStart);
-             else throw new Exception("prior操作已超上级时段边界");
-         } else throw new Exception("prior操作已超时段类型起始原点边界");
+             else sys.error("prior操作已超上级时段边界");
+         } else sys.error("prior操作已超时段类型起始原点边界");
    }
    /**
     * 
@@ -644,7 +644,7 @@ trait MktInterval extends TimeInterval with Ordered[MktInterval] with Comparable
            if (this.intervalType==this.intervalType.mktCalendar.getMinIntervalType) 0
            else {
              if ((subItvType >this.intervalType)||(subItvType.equals(this.intervalType)))
-                 throw new Exception("给定的时段类型不是下级时段");
+                 sys.error("给定的时段类型不是下级时段");
              val chronoUnitForLitvType:ChronoUnit=MarketIntervalUnit.toChronoUnit(subItvType.intervalUnit);
              val count=(this.start.until(this.end, chronoUnitForLitvType)/ subItvType.unitCount).toInt;
              count;
@@ -655,7 +655,7 @@ trait MktInterval extends TimeInterval with Ordered[MktInterval] with Comparable
     * 同类型时间段，时间在前的为小，时间在后的为大。不同类型的时间段不允许比较
     */
    override def compareTo(other:MktInterval):Int={
-     if (!(other.intervalType==this.intervalType)) throw new Exception("不同时段类型的时段无法比较");
+     if (!(other.intervalType==this.intervalType)) sys.error("不同时段类型的时段无法比较");
      if (this==other) 0
      else if( this.isBefor(other)) -1 
      else 1;
