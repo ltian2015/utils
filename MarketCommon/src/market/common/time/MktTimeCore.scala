@@ -19,7 +19,7 @@ import scala.language.implicitConversions;
  */
 object MarketIntervalUnit extends Enumeration 
 {
-   type MarketIntervalUnit=Value;
+  type MarketIntervalUnit=Value;
    val YEAR,MONTH,DAY,HOUR,MINUTE,SECOND=Value;
    def from(value:String):MarketIntervalUnit= value match { 
      case "YEAR" =>MarketIntervalUnit.YEAR
