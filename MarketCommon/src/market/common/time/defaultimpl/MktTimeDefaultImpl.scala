@@ -159,16 +159,17 @@ private final class  DefaultCommonDecoder(mktCalendar:MktCalendar,val intervalTy
     def canDecode(code:String):Boolean={
       code.startsWith(itvType.id);
     } 
+    
     def decode(code:String):MktInterval={
        val subStrs:Array[String]=code.split(separator);
-       if (subStrs.size!=2) sys.error ("时段编码格式非法，无法解码");
-       val itvId:String=subStrs(0);
-       if (itvId!=intervalTypeId)sys.error("时段编码格式非法，无法解码");
-       val itvStartStr:String=subStrs(1);
+       val itvStartStr:String=subStrs match{
+         case Array(this.intervalTypeId,timeStr)=>timeStr
+         case _ =>sys.error("时段编码格式非法，无法解码");
+       }
        val itvStartTime:LocalDateTime=LocalDateTime.parse(itvStartStr, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-       if (itvStartTime==null) sys.error("时段编码格式非法，无法解码");
        this.itvType.getIntervalInclude(itvStartTime);
     }
+    
     def encode(itv:MktInterval):String={
        if (itv.intervalType!=this.itvType) sys.error("给时段的类型(id="
               +itv.intervalType.id+")与解码器所设定的时段类型("+
