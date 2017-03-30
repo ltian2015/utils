@@ -1,2 +1,9 @@
 /bin/
 /target/
+
+/.svn
+/.settings
+/.cache-main.*
+/.classpath.*
+/.project.*
+/.svn//*

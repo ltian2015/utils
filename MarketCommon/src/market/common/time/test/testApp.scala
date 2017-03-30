@@ -89,7 +89,7 @@ object Test extends App{
        println(itv.toString()+":"+itv.isBefor(endExclusive)+" : "+itv.encode);
      }
      val itv2=mc.decode("5m@2017-01-01T23:55:00");
-      println("---------------------------------------------------")   
+      println("------------------------------------------------------------------")   
      println(itv2.intervalType)
      val itv3=itv2.prior(true);
       println(itv2>=itv3);
