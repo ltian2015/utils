@@ -52,7 +52,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
           </dependency>
            <!-- Test -->
 		    <dependency>
-		      <!-- 该依赖包用于编写基于junit的测试用例 -->
+		      <!-- 该依赖包用于编写基于junit的测试用例 ,比较好的文章包括：
+		      http://www.cnblogs.com/caoyuanzhanlang/p/3534846.html-->
 		      <groupId>junit</groupId>
 		      <artifactId>junit</artifactId>
 		      <version>${junit.version}</version>
@@ -62,7 +63,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 		    <dependency>
 		   <!-- 该依赖包用于编写基于人类可读性较好的“规格测试”用例 
 		   详见：https://etorreborre.github.io/specs2/guide/SPECS2-3.8.9/org.specs2.guide.UserGuide.html
-		   http://blog.csdn.net/mapdigit/article/details/26262041-->
+		   http://blog.csdn.net/mapdigit/article/details/26262041
+		   https://github.com/etorreborre/specs2/blob/SPECS2-3.8.9/examples/src/test/scala/examples/JUnitTest.scala-->
 		      <groupId>org.specs2</groupId>
 		      <artifactId>specs2-core_${scalaBinaryVersion}</artifactId>
 		      <version>3.8.9</version>
@@ -71,7 +73,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 		      <dependency>
 		   <!-- 该依赖包用于编写基于人类可读性较好的“规格测试”用例 
 		   详见：https://etorreborre.github.io/specs2/guide/SPECS2-3.8.9/org.specs2.guide.UserGuide.html
-		   http://blog.csdn.net/mapdigit/article/details/26262041-->
+		   http://blog.csdn.net/mapdigit/article/details/26262041
+		   http://wiki.jikexueyuan.com/project/scala-spece2-test/specs2-design.html-->
 		      <groupId>org.specs2</groupId>
 		      <artifactId>specs2-junit_${scalaBinaryVersion}</artifactId>
 		      <version>3.8.9</version>
@@ -277,8 +280,10 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 	          </includes>
 	        </configuration>
 	      </plugin>
-	      <!-- 
+	      
+	      <!-- 可能是用于形成OSGI Bundle的插件,待查
 	      <plugin>
+	        
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.0.0</version>
