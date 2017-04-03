@@ -2,10 +2,10 @@
 package test.samples
 
 import org.scalatest.junit.JUnit3Suite
+import org.junit.runner.RunWith
 import domain.sample.Foo
 /**
-
-*
+*  在Scalatest框架中
  * A <code>Suite</code> that is also a <code>junit.framework.TestCase</code>. 
  *
  * <p>
@@ -74,11 +74,12 @@ import domain.sample.Foo
  * compiler will infer a result type to the <code>testBadIdea</code> method to be the same non-<code>Unit</code> type. As a "result,"
  * JUnit 3 will not discover or run the <code>testBadIdea</code> method at all.
  * </p>
- *ScalaTest也支持行为驱动的开发方式，以人类可读性较好的规格说明书方式来进行测试和验证，但是其提供的规格描述语义与另外较为流行的specs2 有所不同，
- * 关于使用人类可读性较好的语言进行规格测试的案例，请见specs2test文件。
- * ScalaTest also supports the behavior-driven development style, in which you
- *combine tests with text that specifies the behavior being tested. 
+ *ScalaTest也支持行为驱动的开发方式，以人类可读性较好的规格说明书方式来进行测试和验证，见SpecExampleOfScalaTest。
+ * 但是其提供的规格描述语义与另外较为流行的specs2 有所不同，关于使用specs2进行规格测试案例，请见specs2test文件。 
+ * scalatest 的官网指南见：
+ * http://www.scalatest.org/user_guide
  */
+@RunWith(classOf[org.scalatest.junit.JUnitRunner])
 class FooScalaTest extends JUnit3Suite {
   var foo:Foo=_;
   /**
