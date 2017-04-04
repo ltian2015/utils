@@ -1,0 +1,12 @@
+<archetype>
+  <id>simple-scala-project-archetype</id>
+  <sources>
+    <source>src/main/scala/Foo.scala</source>
+  </sources>
+  <testSources>
+    <source>src/test/scala/junit.scala</source>
+    <source>src/test/scala/scalatest.scala</source>
+    <source>src/test/scala/SpecExampleOfScalaTest.scala</source>
+     <source>src/test/scala/specs2test.scala</source>
+  </testSources>
+</archetype>
