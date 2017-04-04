@@ -1,26 +1,27 @@
 <archetype-descriptor xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0" 
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd"
-     name="simple-scala-project-archetype" partial="false" >
-     <!--  
+     name="simple-scala-project-archetype" partial="false" > 
   <requiredProperties>
-    <requiredProperty key="maven.compiler.java-source" >
-      <defaultValue>1.8</defaultValue>
+    <requiredProperty key="MavenCentralRepository" >
+      <defaultValue></defaultValue>
     </requiredProperty>
-    <requiredProperty key="maven.compiler.java-target" >
-      <defaultValue>1.8</defaultValue>
+    <requiredProperty key="MavenSnapshotRepository" >
+      <defaultValue></defaultValue>
     </requiredProperty>
-     <requiredProperty key="junit.version" >
-      <defaultValue>4.12</defaultValue>
+     <requiredProperty key="CompanyShareReleaseRepository" >
+      <defaultValue></defaultValue>
     </requiredProperty>
-     <requiredProperty key="scalaVersion" >
-      <defaultValue>2.12.1</defaultValue>
+     <requiredProperty key="CompanyShareSnapshotRepository" >
+      <defaultValue></defaultValue>
     </requiredProperty>
-    <requiredProperty key="scalaBinaryVersion" >
-      <defaultValue>2.12</defaultValue>
+    <requiredProperty key="ReleasesDeployRepository" >
+      <defaultValue></defaultValue>
+    </requiredProperty>
+    <requiredProperty key="SnapshotDeployRepository" >
+      <defaultValue></defaultValue>
     </requiredProperty>
   </requiredProperties>
- -->
   <fileSets>
     <fileSet encoding="UTF-8" filtered="true" packaged="true" >
       <directory>src/main/scala</directory>

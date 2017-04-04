@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.scalatools.cn</groupId>
   <artifactId>simple-scala-project-archetype</artifactId>
-  <version>1.0</version>
+  <version>1.1</version>
   <packaging>maven-archetype</packaging>
   <name>Archetype - simple scala project </name>
   <inceptionYear>2017</inceptionYear>

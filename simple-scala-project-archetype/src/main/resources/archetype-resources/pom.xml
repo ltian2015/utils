@@ -1,4 +1,3 @@
-#set($name = '${project.artifactId}')
 <project xmlns="http://maven.apache.org/POM/4.0.0" 
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -6,8 +5,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
   <groupId>${groupId}</groupId>
   <artifactId>${artifactId}</artifactId>
   <version>${version}</version>
-  <name>$name</name>
-  <description>a simple scala project of scala2.12.1</description>
+  <name>${artifactId}</name>
+  <description>a  scala project of scala2.12.1</description>
   <inceptionYear>2017</inceptionYear>
   <licenses>
     <license>
@@ -103,19 +102,30 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
         <enabled>false</enabled>
       </snapshots>
       <id>central</id>
-      <name>Central Repository</name>
-      <url>http://localhost:8081/repository/maven-central/</url>
+      <name>Maven Central Repository</name>
+      <url>${MavenCentralRepository}</url>
     </repository>
     
     <repository>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
-      <id>energy-market-snapshot</id>
-      <name>energy-market-snapshot</name>
-      <url>http://localhost:8081/repository/energy-market-snapshot/</url>
+      <id>Snapshot</id>
+      <name>Maven Snapshot Repository</name>
+      <url>${MavenSnapshotRepository}</url>
     </repository>
-   
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+         <enabled>false</enabled>
+      </releases>
+      <id>CompanyShareRelease</id>
+      <name>Company Share Release Repository</name>
+      <url>${CompanyShareReleaseRepository}</url>
+    </repository>
+    
     <repository>
       <snapshots>
         <enabled>false</enabled>
@@ -123,12 +133,11 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
       <releases>
          <enabled>true</enabled>
       </releases>
-      <id>energy-market-release</id>
-      <name>energy-market-release</name>
-      <url>http://localhost:8081/repository/energy-market-release/</url>
+      <id>CompanyShareSnapshot</id>
+      <name>Company Share Snapshot Repository</name>
+      <url>${CompanyShareSnapshotRepository}</url>
     </repository>
   </repositories>
-  
   <pluginRepositories>
     <pluginRepository>
       <releases>
@@ -138,8 +147,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
         <enabled>false</enabled>
       </snapshots>
       <id>central</id>
-      <name>Central Repository</name>
-      <url>http://localhost:8081/repository/maven-central/</url>
+      <name>Maven Central Repository</name>
+      <url>${MavenCentralRepository}</url>
     </pluginRepository>
   </pluginRepositories>
    
@@ -317,14 +326,14 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
   </build>
   <distributionManagement>
 		<repository>
-			<id>releases</id>
-			<name>energy-market-release</name>
-			<url>http://localhost:8081/repository/energy-market-release/</url>
+			<id>ReleasesDeploy</id>
+			<name>Releases Deploy Repository</name>
+			<url>${ReleasesDeployRepository}</url>
 		</repository>
 		<snapshotRepository>
-			<id>energy-market-snapshot</id>
-			<name>energy-market-snapshot</name>
-			<url>http://localhost:8081/repository/energy-market-snapshot/</url>
+			<id>SnapshotDeploy</id>
+			<name>Snapshot Deploy Repository</name>
+			<url>${SnapshotDeployRepository}</url>
 		</snapshotRepository>
 	</distributionManagement>
 </project>
