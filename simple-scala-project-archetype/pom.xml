@@ -84,18 +84,17 @@
         </plugin>
       </plugins>
     </pluginManagement>
-
-   
+  
   </build>
    <distributionManagement>
 		<repository>
-			<id>releases</id>
-			<name>energy-market-release</name>
+			<id>ReleasesDeploy</id>
+			<name>Releases Deploy Repository</name>
 			<url>http://localhost:8081/repository/energy-market-release/</url>
 		</repository>
 		<snapshotRepository>
-			<id>energy-market-snapshot</id>
-			<name>energy-market-snapshot</name>
+			<id>SnapshotDeploy</id>
+			<name>Snapshot Deploy Repository</name>
 			<url>http://localhost:8081/repository/energy-market-snapshot/</url>
 		</snapshotRepository>
 	</distributionManagement>
