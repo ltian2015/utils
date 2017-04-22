@@ -161,6 +161,13 @@ private final class  DefaultCommonDecoder(mktCalendar:MktCalendar,val intervalTy
     } 
     
     def decode(code:String):MktInterval={
+      //TODO 
+      /**思考如果无法解码是抛出异常还是给出None ?
+                后者可能会更改函数返回类型为Option[MktInterval],这样Java程序调用会不会不习惯呢？
+               是为Java程序员另外封装一个API，返回Java8的Optional<MktInterval>，还是就提供此API
+              让Java程序员使用Scala 的Option？
+      * 
+      */
        val subStrs:Array[String]=code.split(separator);
        val itvStartStr:String=subStrs match{
          case Array(this.intervalTypeId,timeStr)=>timeStr
