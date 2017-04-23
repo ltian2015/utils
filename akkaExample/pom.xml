@@ -1,0 +1,400 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>akkaLearn</groupId>
+  <artifactId>akkaExample</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>${project.artifactId}</name>
+  <description>My wonderfull scala app</description>
+  <inceptionYear>2015</inceptionYear>
+  <licenses>
+    <license>
+      <name>My License</name>
+      <url>http://....</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <profiles>
+  <profile>
+      <id>scala-2.12</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+       <encoding>UTF-8</encoding>
+       <maven.compiler.java-source>1.8</maven.compiler.java-source>
+       <maven.compiler.java-target>1.8</maven.compiler.java-target>
+        <junit.version>4.12</junit.version>
+        <scalaVersion>2.12.1</scalaVersion>
+        <scalaBinaryVersion>2.12</scalaBinaryVersion>
+      </properties>
+      <dependencies>
+          <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>${scalaVersion}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.scala-lang.modules</groupId>
+            <artifactId>scala-xml_${scalaBinaryVersion}</artifactId>
+            <version>1.0.6</version>
+          </dependency>
+          <dependency>
+            <groupId>org.scala-lang.modules</groupId>
+            <artifactId>scala-parser-combinators_${scalaBinaryVersion}</artifactId>
+            <version>1.0.4</version>
+          </dependency>
+          <dependency>
+            <groupId>org.scala-lang.modules</groupId>
+            <artifactId>scala-swing_${scalaBinaryVersion}</artifactId>
+            <version>2.0.0-M2</version>
+          </dependency>
+           <!-- Test -->
+		    <dependency>
+		      <groupId>junit</groupId>
+		      <artifactId>junit</artifactId>
+		      <version>${junit.version}</version>
+		      <scope>test</scope>
+		    </dependency>
+    
+		    <dependency>
+		      <groupId>org.specs2</groupId>
+		      <artifactId>specs2-core_${scalaBinaryVersion}</artifactId>
+		      <version>3.8.9</version>
+		      <scope>test</scope>
+		    </dependency>
+		    
+		    <dependency>
+		      <groupId>org.scalatest</groupId>
+		      <artifactId>scalatest_${scalaBinaryVersion}</artifactId>
+		      <version>3.0.1</version>
+		      <scope>test</scope>
+		    </dependency>
+		    <!-- Akk 依赖 -->
+		    <dependency>
+  <groupId>com.typesafe.akka</groupId>
+  <artifactId>akka-actor_${scalaBinaryVersion}</artifactId>
+  <version>2.5.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.typesafe.akka</groupId>
+  <artifactId>akka-agent_${scalaBinaryVersion}</artifactId>
+  <version>2.5.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.typesafe.akka</groupId>
+  <artifactId>akka-camel_${scalaBinaryVersion}</artifactId>
+  <version>2.5.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.typesafe.akka</groupId>
+  <artifactId>akka-cluster_${scalaBinaryVersion}</artifactId>
+  <version>2.5.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.typesafe.akka</groupId>
+  <artifactId>akka-cluster-metrics_${scalaBinaryVersion}</artifactId>
+  <version>2.5.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.typesafe.akka</groupId>
+  <artifactId>akka-cluster-sharding_${scalaBinaryVersion}</artifactId>
+  <version>2.5.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.typesafe.akka</groupId>
+  <artifactId>akka-cluster-tools_${scalaBinaryVersion}</artifactId>
+  <version>2.5.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.typesafe.akka</groupId>
+  <artifactId>akka-distributed-data_${scalaBinaryVersion}</artifactId>
+  <version>2.5.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.typesafe.akka</groupId>
+  <artifactId>akka-multi-node-testkit_${scalaBinaryVersion}</artifactId>
+  <version>2.5.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.typesafe.akka</groupId>
+  <artifactId>akka-osgi_${scalaBinaryVersion}</artifactId>
+  <version>2.5.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.typesafe.akka</groupId>
+  <artifactId>akka-persistence_${scalaBinaryVersion}</artifactId>
+  <version>2.5.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.typesafe.akka</groupId>
+  <artifactId>akka-persistence-query_${scalaBinaryVersion}</artifactId>
+  <version>2.5.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.typesafe.akka</groupId>
+  <artifactId>akka-persistence-tck_${scalaBinaryVersion}</artifactId>
+  <version>2.5.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.typesafe.akka</groupId>
+  <artifactId>akka-remote_${scalaBinaryVersion}</artifactId>
+  <version>2.5.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.typesafe.akka</groupId>
+  <artifactId>akka-slf4j_${scalaBinaryVersion}</artifactId>
+  <version>2.5.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.typesafe.akka</groupId>
+  <artifactId>akka-stream_${scalaBinaryVersion}</artifactId>
+  <version>2.5.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.typesafe.akka</groupId>
+  <artifactId>akka-stream-testkit_${scalaBinaryVersion}</artifactId>
+  <version>2.5.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.typesafe.akka</groupId>
+  <artifactId>akka-testkit_${scalaBinaryVersion}</artifactId>
+  <version>2.5.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.typesafe.akka</groupId>
+  <artifactId>akka-typed_${scalaBinaryVersion}</artifactId>
+  <version>2.5.0</version>
+</dependency>
+
+<dependency>
+  <groupId>com.typesafe.akka</groupId>
+  <artifactId>akka-contrib_${scalaBinaryVersion}</artifactId>
+  <version>2.5.0</version>
+</dependency>
+<!-- 数据库开发 -->
+<dependency>
+    <groupId>com.typesafe.slick</groupId>
+    <artifactId>slick_${scalaBinaryVersion}</artifactId>
+    <version>3.2.0</version>
+</dependency>
+<dependency>
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-nop</artifactId>
+  <version>1.6.4</version>
+</dependency>
+<!-- LDAP开发 -->
+<dependency>
+  <groupId>pt.tecnico.dsi</groupId>
+  <artifactId>ldap_${scalaBinaryVersion}</artifactId>
+  <version>0.4.1</version>
+</dependency>
+      </dependencies>
+  </profile>
+</profiles>
+
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>Central Repository</name>
+      <url>http://localhost:8081/repository/maven-central/</url>
+    </repository>
+    
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>energy-market-snapshot</id>
+      <name>energy-market-snapshot</name>
+      <url>http://localhost:8081/repository/energy-market-snapshot/</url>
+    </repository>
+   
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+         <enabled>true</enabled>
+      </releases>
+      <id>energy-market-release</id>
+      <name>energy-market-release</name>
+      <url>http://localhost:8081/repository/energy-market-release/</url>
+    </repository>
+  </repositories>
+  
+  <pluginRepositories>
+    <pluginRepository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>Central Repository</name>
+      <url>http://localhost:8081/repository/maven-central/</url>
+    </pluginRepository>
+  </pluginRepositories>
+   
+  <build>
+  <!--net.alchim31.maven的scala-maven-plugin插件需要知道的源文件及测试文件目录   begin-->
+    <sourceDirectory>src/main/scala</sourceDirectory>
+    <testSourceDirectory>src/test/scala</testSourceDirectory>
+  <!--net.alchim31.maven 的scala-maven-plugin插件需要知道的源文件及测试文件目录  end-->
+    <plugins>
+	    <plugin>
+	        <!-- 该plugin用于指定Java编译的设置 -->
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <version>3.6.1</version>
+	        <configuration>
+	          <source>${maven.compiler.java-source}</source><!-- 项目中源代码使用的Java 版本 -->
+	          <target>${maven.compiler.java-target}</target><!-- 需要生成的目标class文件的Java编译版本 -->
+	        </configuration>
+	      </plugin>
+	      
+	      <plugin>
+	        <!-- 该插件用于在maven 中对scala代码进行 compiling/testing/running/documenting 
+	           see http://davidb.github.com/scala-maven-plugi -->
+	        <groupId>net.alchim31.maven</groupId>
+	        <artifactId>scala-maven-plugin</artifactId>
+	        <version>3.2.2</version>
+	        <executions>
+	          <execution>
+	            <goals>
+	              <goal>compile</goal>
+	              <goal>testCompile</goal>
+	            </goals>
+	            <configuration>
+	             <sourceDir>src/main/scala</sourceDir>
+	              <args>
+	                <arg>-dependencyfile</arg>
+	                <arg>${project.build.directory}/.scala_dependencies</arg>
+	                  <!-- work-around for https://issues.scala-lang.org/browse/SI-8358 -->
+	                <arg>-nobootcp</arg>
+	              </args>
+	              <configuration>
+		              <jvmArgs>
+		                 <jvmArg>-Xms64m</jvmArg>
+		                 <jvmArg>-Xmx1024m</jvmArg>
+		              </jvmArgs>
+	               </configuration>
+	             </configuration>
+	          </execution>
+	        </executions>
+	        <configuration>
+	           <!-- net.alchim31.maven的scala-maven-plugin 插件会自动从依赖中推断出scala版本，
+	                                     如果想显示指定，则用下面的参数配置插件,本项目使用的是显示指定Scala版本  -->
+               <scalaVersion>${scalaVersion}</scalaVersion>
+            </configuration> 
+	      </plugin>
+	      
+	      <plugin>
+		    <groupId>org.codehaus.mojo</groupId>
+		    <artifactId>build-helper-maven-plugin</artifactId>
+		    <version>3.0.0</version>
+		    <executions>
+		        <execution>
+		            <id>add-source</id>
+		            <phase>generate-sources</phase>
+		            <goals>
+		                <goal>add-source</goal>
+		            </goals>
+		            <configuration>
+		                <sources>
+		                    <source>src/main/scala</source>
+		                </sources>
+		            </configuration>
+		        </execution>
+		        <!--  
+		        <execution>
+		            <id>add-test-source</id>
+		            <phase>generate-sources</phase>
+		            <goals>
+		                <goal>add-test-source</goal>
+		            </goals>
+		            <configuration>
+		                <sources>
+		                    <source>src/test/scala</source>
+		                </sources>
+		            </configuration>
+		        </execution>
+		        -->
+		    </executions>
+		  </plugin>
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-surefire-plugin</artifactId>
+	        <version>2.18.1</version>
+	        <configuration>
+	          <useFile>false</useFile>
+	          <disableXmlReport>true</disableXmlReport>
+	          <!-- If you have classpath issue like NoDefClassError,... -->
+	          <!-- useManifestOnlyJar>false</useManifestOnlyJar -->
+	          <includes>
+	            <include>**/*Test.*</include>
+	            <include>**/*Suite.*</include>
+	          </includes>
+	        </configuration>
+	      </plugin>
+	      <!-- 
+	      <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>test.testscalamvn.App</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+             -->
+    </plugins>
+  </build>
+  <distributionManagement>
+		<repository>
+			<id>releases</id>
+			<name>energy-market-release</name>
+			<url>http://localhost:8081/repository/energy-market-release/</url>
+		</repository>
+		<snapshotRepository>
+			<id>energy-market-snapshot</id>
+			<name>energy-market-snapshot</name>
+			<url>http://localhost:8081/repository/energy-market-snapshot/</url>
+		</snapshotRepository>
+	</distributionManagement>
+</project>
