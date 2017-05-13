@@ -1,0 +1,347 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.oem.cn</groupId>
+  <artifactId>ops.market.common_2.12-</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+  <name>ops.market.common_2.12</name>
+  <description>a project for power market using scala2.12 to provide IEC/CIM based library  </description>
+  <inceptionYear>2017</inceptionYear>
+  <licenses>
+    <license>
+      <name>My License</name>
+      <url>http://....</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <profiles>
+  <profile>
+      <id>scala-2.12</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+       <encoding>UTF-8</encoding>
+       <maven.compiler.java-source>1.8</maven.compiler.java-source>
+       <maven.compiler.java-target>1.8</maven.compiler.java-target>
+        <junit.version>4.12</junit.version>
+        <scalaVersion>2.12.1</scalaVersion>
+        <scalaBinaryVersion>2.12</scalaBinaryVersion>
+      </properties>
+      <dependencies>
+          <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>${scalaVersion}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.scala-lang.modules</groupId>
+            <artifactId>scala-xml_${scalaBinaryVersion}</artifactId>
+            <version>1.0.6</version>
+          </dependency>
+          <dependency>
+            <groupId>org.scala-lang.modules</groupId>
+            <artifactId>scala-parser-combinators_${scalaBinaryVersion}</artifactId>
+            <version>1.0.4</version>
+          </dependency>
+          <dependency>
+            <groupId>org.scala-lang.modules</groupId>
+            <artifactId>scala-swing_${scalaBinaryVersion}</artifactId>
+            <version>2.0.0-M2</version>
+          </dependency>
+           <!-- Test -->
+		    <dependency>
+		      <!-- 该依赖包用于编写基于junit的测试用例 ,比较好的文章包括：
+		      http://www.cnblogs.com/caoyuanzhanlang/p/3534846.html-->
+		      <groupId>junit</groupId>
+		      <artifactId>junit</artifactId>
+		      <version>${junit.version}</version>
+		      <scope>test</scope>
+		    </dependency>
+    
+		    <dependency>
+		   <!-- 该依赖包用于编写基于人类可读性较好的“规格测试”用例 
+		   详见：https://etorreborre.github.io/specs2/guide/SPECS2-3.8.9/org.specs2.guide.UserGuide.html
+		   http://blog.csdn.net/mapdigit/article/details/26262041
+		   https://github.com/etorreborre/specs2/blob/SPECS2-3.8.9/examples/src/test/scala/examples/JUnitTest.scala-->
+		      <groupId>org.specs2</groupId>
+		      <artifactId>specs2-core_${scalaBinaryVersion}</artifactId>
+		      <version>3.8.9</version>
+		      <scope>test</scope>
+		    </dependency>
+		      <dependency>
+		   <!-- 该依赖包用于编写基于人类可读性较好的“规格测试”用例 
+		   详见：https://etorreborre.github.io/specs2/guide/SPECS2-3.8.9/org.specs2.guide.UserGuide.html
+		   http://blog.csdn.net/mapdigit/article/details/26262041
+		   http://wiki.jikexueyuan.com/project/scala-spece2-test/specs2-design.html-->
+		      <groupId>org.specs2</groupId>
+		      <artifactId>specs2-junit_${scalaBinaryVersion}</artifactId>
+		      <version>3.8.9</version>
+		      <scope>test</scope>
+		    </dependency>
+		    <dependency>
+              <groupId>org.scalactic</groupId>
+              <artifactId>scalactic_${scalaBinaryVersion}</artifactId>
+              <version>3.0.1</version>
+             </dependency>
+  		     <dependency>
+  		     <!-- 该依赖包用于编写基于scalatest的测试用例 -->
+		      <groupId>org.scalatest</groupId>
+		      <artifactId>scalatest_${scalaBinaryVersion}</artifactId>
+		      <version>3.0.1</version>
+		      <scope>test</scope>
+		    </dependency>
+		     <!-- https://mvnrepository.com/artifact/eu.timepit/refined_2.12 
+		    <dependency>
+            
+                <groupId>eu.timepit</groupId>
+                <artifactId>refined_2.12</artifactId>
+                <version>0.8.0</version>
+            </dependency>	
+             -->  
+      </dependencies>
+  </profile>
+</profiles>
+
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>Maven Central Repository</name>
+      <url>http://localhost:8081/repository/maven-central/</url>
+    </repository>
+    
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>Snapshot</id>
+      <name>Maven Snapshot Repository</name>
+      <url>http://localhost:8081/repository/maven-snapshots/</url>
+    </repository>
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+         <enabled>false</enabled>
+      </releases>
+      <id>CompanyShareRelease</id>
+      <name>Company Share Release Repository</name>
+      <url>http://localhost:8081/repository/energy-market-release/</url>
+    </repository>
+    
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+         <enabled>true</enabled>
+      </releases>
+      <id>CompanyShareSnapshot</id>
+      <name>Company Share Snapshot Repository</name>
+      <url>http://localhost:8081/repository/energy-market-snapshot/</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>Maven Central Repository</name>
+      <url>http://localhost:8081/repository/maven-central/</url>
+    </pluginRepository>
+  </pluginRepositories>
+   
+  <build>
+		  <!--net.alchim31.maven的scala-maven-plugin插件需要知道的源文件及测试文件目录   begin-->
+		    <sourceDirectory>src/main/scala</sourceDirectory>
+		    <testSourceDirectory>src/test/scala</testSourceDirectory>
+		  <!--net.alchim31.maven 的scala-maven-plugin插件需要知道的源文件及测试文件目录  end-->
+		   <plugins>
+		    <plugin>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-eclipse-plugin</artifactId>
+		    <version>2.10</version>
+		
+		    <configuration>
+		        <downloadSources>true</downloadSources>
+		        <downloadJavadocs>true</downloadJavadocs>
+		        <projectnatures>
+		            <projectnature>org.scala-ide.sdt.core.scalanature</projectnature>
+		            <projectnature>org.eclipse.jdt.core.javanature</projectnature>
+		        </projectnatures>
+		        <buildcommands>
+		            <buildcommand>org.scala-ide.sdt.core.scalabuilder</buildcommand>
+		        </buildcommands>
+		        <classpathContainers>
+		          <!--   <classpathContainer>org.scala-ide.sdt.launching.SCALA_CONTAINER"</classpathContainer>--> 
+		            <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
+		        </classpathContainers>
+		        <excludes>
+		            <exclude>org.scala-lang:scala-library</exclude>
+		            <exclude>org.scala-lang:scala-compiler</exclude>
+		        </excludes>
+		        <sourceIncludes>
+		            <sourceInclude>**/*.scala</sourceInclude>
+		            <sourceInclude>**/*.java</sourceInclude>
+		        </sourceIncludes>
+		    </configuration>
+		</plugin>
+	    <plugin>
+	        <!-- 该plugin用于在maven中设定Java编译器的配置 -->
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <version>3.6.1</version>
+	        <configuration>
+	          <source>${maven.compiler.java-source}</source><!-- 项目中源代码使用的Java 版本 -->
+	          <target>${maven.compiler.java-target}</target><!-- 需要生成的目标class文件的Java编译版本 -->
+	        </configuration>
+	      </plugin>
+	      
+	      <plugin>
+	        <!-- 该插件用于在maven 中对scala代码进行 compiling/testing/running/documenting 
+	           see http://davidb.github.com/scala-maven-plugi 
+	         maven scala eclipse 配置见：  http://docs.scala-lang.org/tutorials/scala-with-maven.html-->
+	        <groupId>net.alchim31.maven</groupId>
+	        <artifactId>scala-maven-plugin</artifactId>
+	        <version>3.2.2</version>
+	        <executions>
+	          <execution>
+	            <goals>
+	              <goal>compile</goal>
+	              <goal>testCompile</goal>
+	            </goals>
+	            <configuration>
+	             <sourceDir>src/main/scala</sourceDir>
+	              <args>
+	                <arg>-dependencyfile</arg>
+	                <arg>${project.build.directory}/.scala_dependencies</arg>
+	                  <!-- work-around for https://issues.scala-lang.org/browse/SI-8358 -->
+	                <arg>-nobootcp</arg>
+	              </args>
+	              <configuration>
+		              <jvmArgs>
+		                 <jvmArg>-Xms64m</jvmArg>
+		                 <jvmArg>-Xmx1024m</jvmArg>
+		              </jvmArgs>
+	               </configuration>
+	             </configuration>
+	          </execution>
+	        </executions>
+	        <configuration>
+	           <!-- net.alchim31.maven的scala-maven-plugin 插件会自动从依赖中推断出scala版本，
+	                                     如果想显示指定，则用下面的参数配置插件,本项目使用的是显示指定Scala版本  -->
+               <scalaVersion>${scalaVersion}</scalaVersion>
+            </configuration> 
+	      </plugin>
+	      
+	      <plugin>
+	      <!-- build-helper-maven-plugin插件来支持自定义的项目目录结构(相对于Maven默认目录结构来说),当eclipse工程中源文件目录
+	             与Maven默认的src/main/java不同时， 使Maven可以编译。build-helper-maven-plugin的另一个非常有用的目标是attach-artifact，
+	             使用该目标，你可以以classifier的形式选取部分项目文件生成附属构件，并同时install到本地仓库，也可以deploy到远程仓库。参见：
+	       http://blog.csdn.net/wangjunjun2008/article/details/17553503
+	       http://www.mojohaus.org/build-helper-maven-plugin/-->
+		    <groupId>org.codehaus.mojo</groupId>
+		    <artifactId>build-helper-maven-plugin</artifactId>
+		    <version>3.0.0</version>
+		    <executions>
+		        <execution>
+		            <id>add-source</id>
+		            <phase>generate-sources</phase>
+		            <goals>
+		                <goal>add-source</goal>
+		            </goals>
+		            <configuration>
+		                <sources>
+		                    <source>src/main/scala</source>
+		                </sources>
+		            </configuration>
+		        </execution>
+		        <execution>
+		            <id>add-test-source</id>
+		            <phase>generate-sources</phase>
+		            <goals>
+		                <goal>add-test-source</goal>
+		            </goals>
+		            <configuration>
+		                <sources>
+		                    <source>src/test/scala</source>
+		                </sources>
+		            </configuration>
+		        </execution>
+		    </executions>
+		  </plugin>
+		  
+	      <plugin>
+	       <!--
+	       maven 用于进行回归测试时设定测试的进程使用方式以及报告的生成方式等，可以参见
+	         http://blog.csdn.net/hhb200766/article/details/7801557 
+	         http://blog.csdn.net/mn11201117/article/details/17684973
+                           等文章-->
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-surefire-plugin</artifactId>
+	        <version>2.19.1</version>
+	        <configuration>
+	          <useFile>false</useFile>
+	          <disableXmlReport>true</disableXmlReport>
+	          <!-- If you have classpath issue like NoDefClassError,... -->
+	          <!-- useManifestOnlyJar>false</useManifestOnlyJar -->
+	          <includes>
+	            <include>**/*Test.*</include>
+	            <include>**/*Suite.*</include>
+	          </includes>
+	        </configuration>
+	      </plugin>
+	      
+	      <!--maven-assembly-plugin插件可用来将工程依赖的jar包和工程都打成一个jar打包中，是一个个性化的Maven打包工具，见：
+	      http://www.cnblogs.com/enshrineZither/p/3402616.html
+	      http://www.blogjava.net/aoxj/archive/2009/01/16/251615.html
+	               官网：http://maven.apache.org/plugins/maven-assembly-plugin/usage.html
+	      <plugin>
+	        
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>test.testscalamvn.App</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+         -->
+    </plugins>
+  </build>
+  <distributionManagement>
+		<repository>
+			<id>ReleasesDeploy</id>
+			<name>Releases Deploy Repository</name>
+			<url>http://localhost:8081/repository/energy-market-release/</url>
+		</repository>
+		<snapshotRepository>
+			<id>SnapshotDeploy</id>
+			<name>Snapshot Deploy Repository</name>
+			<url>http://localhost:8081/repository/energy-market-snapshot/</url>
+		</snapshotRepository>
+	</distributionManagement>
+</project>
