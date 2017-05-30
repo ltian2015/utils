@@ -5,9 +5,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import scala.reflect.api._
 import scala.reflect.api.Universe
-import oem.market.common.BaseTradeCenter
-import oem.market.common.TradeCenter
-import oem.market.common.IdentifiedObject
+import ops.market.common.BaseTradeCenter
+import ops.market.common.TradeCenter
+import ops.common.IdentifiedObject
 import scala.reflect.runtime.{universe=>ru}
 import scala.reflect.runtime._
 import scala.reflect.runtime.universe._

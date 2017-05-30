@@ -1,7 +1,8 @@
 package ops
 package market
 package common
-import ops.market.common.annocation._
+import ops.common.annotations._
+import ops.common._
 //////////////////////////////////////////////////////////////////////
 trait TradeCenter extends IdentifiedObject
 {
@@ -31,6 +32,7 @@ class BaseTradeCenter(val mRID:String,val name:String,
   val addr:String="huangpu road 209";
   
 }
+@Label("数据中心")
 class RealTradeCenter( mRID:String, name:String,
       aliasName:String) extends BaseTradeCenter(mRID,name,aliasName)
 {

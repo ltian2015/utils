@@ -10,7 +10,7 @@ import java.lang.Comparable;
 import scala.Ordered;
 import java.time.temporal.ChronoUnit;
 import java.time.format.DateTimeFormatter
-import ops.market.common.TradeCenter;
+import ops.market.common.TradeCenter
 import scala.List;
 import scala.collection.mutable.ListBuffer;
 import java.time.Duration

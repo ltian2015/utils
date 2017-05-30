@@ -2,35 +2,34 @@ package test.samples
 
 import scala.reflect.runtime._
 import scala.reflect.runtime.universe._
-import oem.market.common.BaseTradeCenter
-import oem.market.common.TradeCenter
-import oem.market.common.RealTradeCenter
-import oem.market.common.IdentifiedObject
+import ops.market.common.BaseTradeCenter
+import ops.market.common.TradeCenter
+import ops.market.common.RealTradeCenter
+import ops.common.IdentifiedObject
 import scala.collection.immutable.List._
-import oem.market.common.Name
-import oem.market.common.NameType
-import oem.market.common.NameManageService
-import oem.market.common.NameTypeAuthority
-import oem.market.common.UndefinedNameTypeManageService
-import oem.market.common.UndefinedNameTypeAuthority
-import oem.market.common.UndefinedNameType
+import ops.common.Name
+import ops.common.NameType
+import ops.common.NameManageService
+import ops.common.NameTypeAuthority
+import ops.common.UndefinedNameTypeAuthority
+import ops.common.NoAuthorityNameType
 class CommonNameType extends NameType{
    def name:String="常用名"
    def description="常用的名字";
    def authority:NameTypeAuthority=UndefinedNameTypeAuthority;
 }
- 
-
-object InstanceMirrorApp extends App {
  class TypedName(val name:String,val fieldPath:String) extends Name{
-   def nameType:NameType=UndefinedNameType;
+   def nameType:NameType=NoAuthorityNameType;
    override def toString=s"[TypedName=name: $name ; path: $fieldPath]" ;
 }
+
+object InstanceMirrorApp extends App {
+ 
  
  val btc:TradeCenter=new RealTradeCenter("100","sichuan","dff");
  def  typedNameGenerator(name:String,path:String):Name=new TypedName(name,path);
  implicit  val defaultTypedNameGenerator:(String,String)=>Name=typedNameGenerator;
- println(btc.allNames);
+  btc.printMetaInfo;
  //btc.printTypeInfo;
  println("************************************************************");
  //println(btc.getAnnotationMap);
