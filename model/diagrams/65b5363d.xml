@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archimate:ArchimateDiagramModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:archimate="http://www.archimatetool.com/archimate" id="65b5363d" name="市场主体结构图" documentation="直接从市场批发购电的">
+  <children xsi:type="archimate:DiagramModelArchimateObject" id="22d679bc" font="1|Segoe UI|14.0|1|WINDOWS|1|-28|0|0|0|700|0|0|0|0|3|2|1|34|Segoe UI" textAlignment="2" targetConnections="3fc9ab81 47c539f8">
+    <bounds x="84" y="324" width="1261" height="85"/>
+    <sourceConnections xsi:type="archimate:DiagramModelArchimateConnection" id="0f7fa206" source="22d679bc" target="2058bbeb">
+      <relationship xsi:type="archimate:AssignmentRelationship" href="../relations/b49b8d80.xml#b49b8d80"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="archimate:DiagramModelArchimateConnection" id="e7ca5640" source="22d679bc" target="9d16e76a">
+      <relationship xsi:type="archimate:AssignmentRelationship" href="../relations/c1ee8bb0.xml#c1ee8bb0"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="archimate:DiagramModelArchimateConnection" id="d03462f9" source="22d679bc" target="a6e6dec1">
+      <relationship xsi:type="archimate:AssignmentRelationship" href="../relations/85b0427f.xml#85b0427f"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="archimate:DiagramModelArchimateConnection" id="0d11313d" source="22d679bc" target="b26ab047">
+      <relationship xsi:type="archimate:AssignmentRelationship" href="../relations/fc581fd6.xml#fc581fd6"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="archimate:DiagramModelArchimateConnection" id="ba57f37a" source="22d679bc" target="c4791edb">
+      <relationship xsi:type="archimate:AssignmentRelationship" href="../relations/762ad753.xml#762ad753"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="archimate:DiagramModelArchimateConnection" id="6a106911" source="22d679bc" target="c50f37d0">
+      <relationship xsi:type="archimate:AssignmentRelationship" href="../relations/f1e73a82.xml#f1e73a82"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="archimate:DiagramModelArchimateConnection" id="1c52114b" source="22d679bc" target="c60c910b">
+      <relationship xsi:type="archimate:AssignmentRelationship" href="../relations/8c3a6ab0.xml#8c3a6ab0"/>
+    </sourceConnections>
+    <archimateElement xsi:type="archimate:BusinessActor" href="../business/a5bc3595.xml#a5bc3595"/>
+  </children>
+  <children xsi:type="archimate:DiagramModelArchimateObject" id="b2dcf0b3" font="1|Segoe UI|14.0|0|WINDOWS|1|-28|0|0|0|400|0|0|0|0|3|2|1|34|Segoe UI" textAlignment="2">
+    <bounds x="132" y="468" width="217" height="97"/>
+    <sourceConnections xsi:type="archimate:DiagramModelArchimateConnection" id="3fc9ab81" source="b2dcf0b3" target="22d679bc">
+      <relationship xsi:type="archimate:SpecialisationRelationship" href="../relations/236862e6.xml#236862e6"/>
+    </sourceConnections>
+    <archimateElement xsi:type="archimate:BusinessActor" href="../business/77553c36.xml#77553c36"/>
+  </children>
+  <children xsi:type="archimate:DiagramModelArchimateObject" id="9d16e76a" font="1|Segoe UI|14.0|0|WINDOWS|1|-28|0|0|0|400|0|0|0|0|3|2|1|34|Segoe UI" textAlignment="2" targetConnections="e7ca5640">
+    <bounds x="1080" y="132" width="120" height="97"/>
+    <archimateElement xsi:type="archimate:BusinessRole" href="../business/5201d641.xml#5201d641"/>
+  </children>
+  <children xsi:type="archimate:DiagramModelArchimateObject" id="c50f37d0" font="1|Segoe UI|14.0|0|WINDOWS|1|-28|0|0|0|400|0|0|0|0|3|2|1|34|Segoe UI" textAlignment="2" targetConnections="6a106911">
+    <bounds x="1225" y="132" width="120" height="97"/>
+    <archimateElement xsi:type="archimate:BusinessRole" href="../business/b29f2d78.xml#b29f2d78"/>
+  </children>
+  <children xsi:type="archimate:DiagramModelArchimateObject" id="4b772e8a" font="1|Segoe UI|14.0|0|WINDOWS|1|-28|0|0|0|400|0|0|0|0|3|2|1|34|Segoe UI" textAlignment="2">
+    <bounds x="804" y="468" width="193" height="97"/>
+    <sourceConnections xsi:type="archimate:DiagramModelArchimateConnection" id="47c539f8" source="4b772e8a" target="22d679bc">
+      <relationship xsi:type="archimate:SpecialisationRelationship" href="../relations/9fabaef0.xml#9fabaef0"/>
+    </sourceConnections>
+    <archimateElement xsi:type="archimate:BusinessActor" href="../business/61db78ba.xml#61db78ba"/>
+  </children>
+  <children xsi:type="archimate:DiagramModelGroup" id="2131203e" name="云南电力交易中心已经准许开展业务的业务角色" font="1|Segoe UI|14.0|1|WINDOWS|1|-28|0|0|0|700|0|0|0|0|3|2|1|34|Segoe UI">
+    <bounds x="72" y="72" width="493" height="193"/>
+    <children xsi:type="archimate:DiagramModelArchimateObject" id="a6e6dec1" font="1|Segoe UI|14.0|0|WINDOWS|1|-28|0|0|0|400|0|0|0|0|3|2|1|34|Segoe UI" textAlignment="2" targetConnections="d03462f9">
+      <bounds x="24" y="60" width="120" height="97"/>
+      <archimateElement xsi:type="archimate:BusinessRole" href="../business/f94f2cf3.xml#f94f2cf3"/>
+    </children>
+    <children xsi:type="archimate:DiagramModelArchimateObject" id="2058bbeb" font="1|Segoe UI|14.0|0|WINDOWS|1|-28|0|0|0|400|0|0|0|0|3|2|1|34|Segoe UI" textAlignment="2" targetConnections="0f7fa206">
+      <bounds x="168" y="60" width="120" height="97"/>
+      <archimateElement xsi:type="archimate:BusinessRole" href="../business/1c3bf65b.xml#1c3bf65b"/>
+    </children>
+    <children xsi:type="archimate:DiagramModelArchimateObject" id="c60c910b" font="1|Segoe UI|14.0|0|WINDOWS|1|-28|0|0|0|400|0|0|0|0|3|2|1|34|Segoe UI" textAlignment="2" targetConnections="1c52114b">
+      <bounds x="336" y="60" width="120" height="97"/>
+      <archimateElement xsi:type="archimate:BusinessRole" href="../business/e5a82c4d.xml#e5a82c4d"/>
+    </children>
+  </children>
+  <children xsi:type="archimate:DiagramModelGroup" id="e3121710" name="云南电力交易中心即将开展业务的业务角色" font="1|Segoe UI|14.0|1|WINDOWS|1|-28|0|0|0|700|0|0|0|0|3|2|1|34|Segoe UI" fillColor="#80ff80">
+    <bounds x="576" y="72" width="493" height="192"/>
+    <children xsi:type="archimate:DiagramModelArchimateObject" id="b26ab047" font="1|Segoe UI|14.0|0|WINDOWS|1|-28|0|0|0|400|0|0|0|0|3|2|1|34|Segoe UI" textAlignment="2" targetConnections="0d11313d">
+      <bounds x="12" y="48" width="120" height="97"/>
+      <archimateElement xsi:type="archimate:BusinessRole" href="../business/69613949.xml#69613949"/>
+    </children>
+    <children xsi:type="archimate:DiagramModelArchimateObject" id="c4791edb" font="1|Segoe UI|14.0|0|WINDOWS|1|-28|0|0|0|400|0|0|0|0|3|2|1|34|Segoe UI" textAlignment="2" targetConnections="ba57f37a">
+      <bounds x="168" y="48" width="120" height="97"/>
+      <archimateElement xsi:type="archimate:BusinessRole" href="../business/1198eee1.xml#1198eee1"/>
+    </children>
+  </children>
+</archimate:ArchimateDiagramModel>

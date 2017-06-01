@@ -15,6 +15,7 @@ package object time{
   type IntervalDecoder= String=>Option[BusinessInterval];
   type IntervalTypeEncoder= BusinessIntervalType=>String;
   type IntervalEncoder=BusinessInterval=>String;
+  
   /**
    * 
    * Boolean型变量为true,表示

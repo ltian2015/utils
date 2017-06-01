@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archimate:ArchimateDiagramModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:archimate="http://www.archimatetool.com/archimate" id="be2eb4cd" name="市场运行业务过程图">
+  <children xsi:type="archimate:DiagramModelArchimateObject" id="113a11d4" textAlignment="2">
+    <bounds x="204" y="120" width="925" height="493"/>
+    <archimateElement xsi:type="archimate:BusinessFunction" href="../business/7df81e2d.xml#7df81e2d"/>
+  </children>
+</archimate:ArchimateDiagramModel>

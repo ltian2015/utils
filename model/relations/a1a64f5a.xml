@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archimate:UsedByRelationship xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:archimate="http://www.archimatetool.com/archimate" id="a1a64f5a" documentation="电力市场业务需要电网运行的配合&#xD;&#xA;">
+  <source xsi:type="archimate:BusinessCollaboration" href="../business/59db0ad1.xml#59db0ad1"/>
+  <target xsi:type="archimate:BusinessProcess" href="../business/32984fb5.xml#32984fb5"/>
+</archimate:UsedByRelationship>
