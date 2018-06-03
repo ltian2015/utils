@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.scalatools.cn</groupId>
+  <artifactId>simple-scala-project-archetype</artifactId>
+  <version>1.2</version>
+  <packaging>maven-archetype</packaging>
+  <name>Archetype - simple scala project </name>
+  <inceptionYear>2017</inceptionYear>
+  <description>The maven-scala-plugin is used for compiling/testing/running/documenting scala code in maven.</description>
+
+  <properties>
+    <maven.test.skip>true</maven.test.skip>
+    <maven.version>3.3.9</maven.version>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <encoding>UTF-8</encoding>
+    <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
+  </properties>
+
+  <prerequisites>
+    <maven>${maven.version}</maven>
+  </prerequisites>
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>Central Repository</name>
+      <url>http://localhost:8081/repository/maven-central/</url>
+    </repository>
+    
+    <repository>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <id>energy-market-snapshot</id>
+      <name>energy-market-snapshot</name>
+      <url>http://localhost:8081/repository/energy-market-snapshot/</url>
+    </repository>
+   
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+         <enabled>true</enabled>
+      </releases>
+      <id>energy-market-release</id>
+      <name>energy-market-release</name>
+      <url>http://localhost:8081/repository/energy-market-release/</url>
+    </repository>
+  </repositories>
+  
+  <pluginRepositories>
+    <pluginRepository>
+      <releases>
+        <updatePolicy>never</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <name>Central Repository</name>
+      <url>http://localhost:8081/repository/maven-central/</url>
+    </pluginRepository>
+  </pluginRepositories>
+  
+  <build>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.archetype</groupId>
+        <artifactId>archetype-packaging</artifactId>
+        <version>3.0.0</version>
+      </extension>
+    </extensions>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-archetype-plugin</artifactId>
+          <version>3.0.0</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  
+  </build>
+   <distributionManagement>
+		<repository>
+			<id>ReleasesDeploy</id>
+			<name>Releases Deploy Repository</name>
+			<url>http://localhost:8081/repository/energy-market-release/</url>
+		</repository>
+		<snapshotRepository>
+			<id>SnapshotDeploy</id>
+			<name>Snapshot Deploy Repository</name>
+			<url>http://localhost:8081/repository/energy-market-snapshot/</url>
+		</snapshotRepository>
+	</distributionManagement>
+</project>
